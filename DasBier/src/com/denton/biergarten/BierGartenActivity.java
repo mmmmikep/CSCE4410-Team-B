@@ -33,7 +33,7 @@ public class BierGartenActivity extends TabActivity {
                       .setContent(intent);
         tabHost.addTab(spec);
         
-        intent = new Intent().setClass(this, DasPlacesActivity.class);
+        intent = new Intent().setClass(this, DasBuddyActivity.class);
         spec = tabHost.newTabSpec("buddies").setIndicator("Das Buddies",
                           res.getDrawable(R.drawable.icon))
                       .setContent(intent);
