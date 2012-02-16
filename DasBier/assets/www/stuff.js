@@ -1,3 +1,4 @@
+<script language = "javascript">
 var toolbar = new Ext.Toolbar({
     dock : 'top',
     title: 'Biergarten'
@@ -50,4 +51,5 @@ new Ext.Application({
             scroll: 'vertical'
         });
     }
-});​
+});
+</script>​
