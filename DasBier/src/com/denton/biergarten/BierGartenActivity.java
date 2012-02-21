@@ -21,21 +21,23 @@ public class BierGartenActivity extends TabActivity {
         // Create an Intent to launch an Activity for the tab (to be reused)
         intent = new Intent().setClass(this, DasBierActivity.class);
 
+            
+        
         // Initialize a TabSpec for each tab and add it to the TabHost
         spec = tabHost.newTabSpec("bier").setIndicator("Das Bier",
-                          res.getDrawable(R.drawable.icon))
+                          res.getDrawable(R.drawable.beerlong))
                       .setContent(intent);
         tabHost.addTab(spec);
 
         intent = new Intent().setClass(this, DasPlacesActivity.class);
         spec = tabHost.newTabSpec("places").setIndicator("Das Places",
-                          res.getDrawable(R.drawable.icon))
+                          res.getDrawable(R.drawable.placeslong))
                       .setContent(intent);
         tabHost.addTab(spec);
         
         intent = new Intent().setClass(this, DasBuddyActivity.class);
         spec = tabHost.newTabSpec("buddies").setIndicator("Das Buddies",
-                          res.getDrawable(R.drawable.icon))
+                          res.getDrawable(R.drawable.beerbuddylong))
                       .setContent(intent);
         tabHost.addTab(spec);
 
