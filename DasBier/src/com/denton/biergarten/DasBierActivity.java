@@ -18,6 +18,6 @@ public class DasBierActivity extends Activity {
 
         mWebView = (WebView) findViewById(R.id.webview);
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.loadUrl("file:///android_asset/www/bier.html");
+        mWebView.loadUrl("file:///android_asset/www/places.html");
     }
 }
