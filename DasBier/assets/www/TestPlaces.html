@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+ <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false">
+    </script>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+   
+    <script type="text/javascript">
+	  var map;
+      var infowindow;
+	  var request1;
+	  var i = 0;
+
+      function initialize() {
+		var denton = new google.maps.LatLng(33.216646,-97.133646);
+        map = new google.maps.Map(document.getElementById('map_canvas'), {
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          center: denton,
+          zoom: 16
+        });
+		
+		if (i == 0){
+		  request1 = {
+          location: denton,
+          radius: 15000,
+          types: ['restaurant'],
+		  keyword: ""
+		  };
+		 } else if (i == 1)
+		 {
+		  request1 = {
+          location: denton,
+          radius: 15000,
+          types: ['bar'],
+		  keyword: ""
+		  };
+		 }
+		  
+        infowindow = new google.maps.InfoWindow();
+        var service = new google.maps.places.PlacesService(map);
+        service.search(request1, callback);
+      }
+
+	  function changeType()
+	  {
+		i = 1;
+		initialize();
+	  }
+	  
+	  
+      function callback(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+          }
+        }
+      }
+
+      function createMarker(place) {
+	  var contentTxt;
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          var request = {
+		  reference: place.reference
+		  };
+		  
+		  service = new google.maps.places.PlacesService(map);
+			service.getDetails(request, deetz);
+
+			function deetz(place, status) {
+				if (status == google.maps.places.PlacesServiceStatus.OK) {
+				contentTxt = '<p>Name = '+place.name + '<p></p>' + '<p>Address = '+place.formatted_address;
+				infowindow.setContent(contentTxt);
+  }
+}
+		  
+		  //infowindow.setContent(place.icon);		  
+          infowindow.open(map, this);
+        });
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body onload="initialize()">
+    <div id="map_canvas" style="width:100%; height:50%"></div>
+	
+	<h1>some stuff should appear below this</h1>
+
+<p id="label">Name:</p> 
+<p id="test">test</p></br>
+<button id="uName">User Name</button></br>
+<button id="uNum">User Number</button></br>
+<button id="uLoc">User Location</button></br>
+<button id="bSrch">Search Beers</button></br>
+<button type="button" onclick="changeType()">Change type</button></br>
+<div id="results"></div>Search results go where?</div>
+	
+  </body>
+  
+  
+</html>
