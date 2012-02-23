@@ -12,7 +12,7 @@
 		var errorMessage = "error";
 		var url = "http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep";
 		var key = "key=d655538d2bbdcad2157eb187361e3b86&";
-		var myJSON;
+		
 			
 
 		
@@ -56,23 +56,21 @@ xmlhttp.send();
 
 }
 
-function JsonReturns(result){
-    myJSON = result;
-	   
-	}
 
 $(document).ready(function(){
 
   
 
   $("#uName").click(function(){
-    $.getJSON(url+'user?'+key+'user=mmmmikep',JsonReturns(result));
-      $("#label").html("Name:");
-	  $("#test").html(myJSON.results.user.user_name);
+	 $.getJSON('http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep',function(result){
+      
+	  $("#label").html("Name:");
+	  $("#test").html(result.results.user.user_name); 
+	});
   });
   
   $("#uNum").click(function(){
-    $.getJSON('file:///C:/Users/KRISTINAKICKASS/jsontest.txt',function(result){
+    $.getJSON('http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep',function(result){
       var myJSON = result;
 	  $("#label").html("User ID:");
 	  $("#test").html(result.results.user.uid);
@@ -81,7 +79,7 @@ $(document).ready(function(){
   });  
  
   $("#uLoc").click(function(){
-    $.getJSON('file:///C:/Users/KRISTINAKICKASS/jsontest.txt',function(result){
+    $.getJSON('http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep',function(result){
       var myJSON = result;
 	  $("#label").html("Location:");
 	  $("#test").html(result.results.user.location);
@@ -90,7 +88,7 @@ $(document).ready(function(){
   });
   
   $("#bSrch").click(function(){
-    $.getJSON('file:///C:/Users/KRISTINAKICKASS/jsonbeersearch.txt',function(json){
+    $.getJSON('http://api.untappd.com/v3/beer_search?key=d655538d2bbdcad2157eb187361e3b86&q=deep%20ellum',function(json){
       $.each(json.results, function(i,beer){
      // this is where we do what we want with the beer
 	 $("#results").append('<p><img src="'+beer.beer_stamp+'" widt="48" height="48" />'+beer.beer_name+'</p>');
