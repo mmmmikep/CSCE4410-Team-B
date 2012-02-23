@@ -1,19 +1,125 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+<meta http-equiv="Access-Control-Allow-Origin" content="http://api.untappd.com">
 <title>BierTime</title>
-<script type="text/javascript" charset="utf-8" src="phonegap1-4.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript">
+
+	function initialize(){
+
+		var doneMessage = "Doneski";
+		var errorMessage = "error";
+		var url = "http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep";
+		var key = "key=d655538d2bbdcad2157eb187361e3b86&";
+		var myJSON;
+			
+
+		
+	}
+	
+
+
+	function processResponse(value){
+		document.getElementById("jname").innerHTML = value.results.user.user_name;
+	}
+	
+	function showUI(json)            
+	{        
+		alert("inside ShowUI");
+		var html=[ ];        
+		var ind = json.parse.results.user.user_name;        
+		html.push(ind);       
+		document.getElementById("jname").innerHTML =html;            
+	}	  
+</script> 
+
+<!--when run locally (ie, not on a webserver) there is an error for security reasons.  the URL json call should work when the page is live-->
+<!--until then, we have a json test file to make sure the syntax for working with it works-->
+<!--http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep -->
+<!--file:///C:/Users/KRISTINAKICKASS/jsontest.txt-->
+<script type="text/javascript">
+function loadXMLDoc()
+{
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+	var jsonstring = xmlhttp.responseText;
+	jsonstring=jsonstring.parse;
+    $("#label").html="Whatup";
+    }
+  }
+xmlhttp.open("GET","jsontest.txt",true);
+xmlhttp.send();
+
+}
+
+function JsonReturns(result){
+    myJSON = result;
+	   
+	}
+
+$(document).ready(function(){
+
+  
+
+  $("#uName").click(function(){
+    $.getJSON(url+'user?'+key+'user=mmmmikep',JsonReturns(result));
+      $("#label").html("Name:");
+	  $("#test").html(myJSON.results.user.user_name);
+  });
+  
+  $("#uNum").click(function(){
+    $.getJSON('file:///C:/Users/KRISTINAKICKASS/jsontest.txt',function(result){
+      var myJSON = result;
+	  $("#label").html("User ID:");
+	  $("#test").html(result.results.user.uid);
+    
+	});
+  });  
+ 
+  $("#uLoc").click(function(){
+    $.getJSON('file:///C:/Users/KRISTINAKICKASS/jsontest.txt',function(result){
+      var myJSON = result;
+	  $("#label").html("Location:");
+	  $("#test").html(result.results.user.location);
+    
+	});
+  });
+  
+  $("#bSrch").click(function(){
+    $.getJSON('file:///C:/Users/KRISTINAKICKASS/jsonbeersearch.txt',function(json){
+      $.each(json.results, function(i,beer){
+     // this is where we do what we want with the beer
+	 $("#results").append('<p><img src="'+beer.beer_stamp+'" widt="48" height="48" />'+beer.beer_name+'</p>');
+		});
+    
+	});
+  });
+  
+  
+  
+});
+</script>		  
+
+
 </head>
-<body>
+<body onload="initialize()">
 <h1>some stuff should appear below this</h1>
 
-<p>Name: <span id="jname"></span><br /> </p>
-<script src="https://maps.googleapis.com/maps/api/place/search/json?location=-33.8670522,151.1957362&radius=500&types=food&name=Lucky&sensor=false&key=AIzaSyCk_hpX5XeQTywkBZtBMptnXQylxlldpC8">
-	var JSONObject = "https://maps.googleapis.com/maps/api/place/search/json?location=33.217436,-97.129555&radius=500&name=Lucky&sensor=false&key=AIzaSyCk_hpX5XeQTywkBZtBMptnXQylxlldpC8";
-	var myObject = JSON.parse(JSONObject);
-		document.getElementById("jname").innerHTML=myObject.results[0].name  
-		//document.getElementById("jphone").innerHTML=JSONObject.phone  
-</script>
+<p id="label">Name:</p> 
+<p id="test">test</p></br>
+<button id="uName">User Name</button></br>
+<button id="uNum">User Number</button></br>
+<button id="uLoc">User Location</button></br>
+<button id="bSrch">Search Beers</button></br>
+<button type="button" onclick="loadXMLDoc()">Change Content</button></br>
+<div id="results"></div>Search results go where?</div>
+
+
+
 
 </body>
 </html>
