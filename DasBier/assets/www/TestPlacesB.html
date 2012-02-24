@@ -1,122 +1,45 @@
+<!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Access-Control-Allow-Origin" content="http://api.untappd.com">
-<title>Places </title>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-<script type="text/javascript">
+  <head>
+    <title>Device Properties Example</title>
 
-	function initialize(){
+    <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+    <script type="text/javascript" charset="utf-8">
 
-		var doneMessage = "Doneski";
-		var errorMessage = "error";
-		var url = "http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep";
-		var key = "key=d655538d2bbdcad2157eb187361e3b86&";
+    // Wait for PhoneGap to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
 
-
-
-
-	}
-
-
-
-	function processResponse(value){
-		document.getElementById("jname").innerHTML = value.results.user.user_name;
-	}
-
-	function showUI(json)            
-	{        
-		alert("inside ShowUI");
-		var html=[ ];        
-		var ind = json.parse.results.user.user_name;        
-		html.push(ind);       
-		document.getElementById("jname").innerHTML =html;            
-	}	  
-</script> 
-
-<!--when run locally (ie, not on a webserver) there is an error for security reasons.  the URL json call should work when the page is live-->
-<!--until then, we have a json test file to make sure the syntax for working with it works-->
-<!--http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep -->
-<!--file:///C:/Users/KRISTINAKICKASS/jsontest.txt-->
-<script type="text/javascript">
-function loadXMLDoc()
-{
-var xmlhttp = new XMLHttpRequest();
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-	var jsonstring = xmlhttp.responseText;
-	jsonstring=jsonstring.parse;
-    $("#label").html="Whatup";
+    // PhoneGap is ready
+    //
+    function onDeviceReady() {
+        navigator.geolocation.getCurrentPosition(onSuccess, onError);
     }
-  }
-xmlhttp.open("GET","jsontest.txt",true);
-xmlhttp.send();
 
-}
+    // onSuccess Geolocation
+    //
+    function onSuccess(position) {
+        var element = document.getElementById('geolocation');
+        element.innerHTML = 'Latitude: '           + position.coords.latitude              + '<br />' +
+                            'Longitude: '          + position.coords.longitude             + '<br />' +
+                            'Altitude: '           + position.coords.altitude              + '<br />' +
+                            'Accuracy: '           + position.coords.accuracy              + '<br />' +
+                            'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
+                            'Heading: '            + position.coords.heading               + '<br />' +
+                            'Speed: '              + position.coords.speed                 + '<br />' +
+                            'Timestamp: '          + new Date(position.timestamp)          + '<br />';
+    }
 
+    // onError Callback receives a PositionError object
+    //
+    function onError(error) {
+        alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+    }
 
-$(document).ready(function(){
-
-  
-
-  $("#uName").click(function(){
-	 $.getJSON('http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep',function(result){
-      
-	  $("#label").html("Name:");
-	  $("#test").html(result.results.user.user_name); 
-	});
-  });
-  
-  $("#uNum").click(function(){
-    $.getJSON('http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep',function(result){
-      var myJSON = result;
-	  $("#label").html("User ID:");
-	  $("#test").html(result.results.user.uid);
-    
-	});
-  });  
- 
-  $("#uLoc").click(function(){
-    $.getJSON('http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep',function(result){
-      var myJSON = result;
-	  $("#label").html("Location:");
-	  $("#test").html(result.results.user.location);
-    
-	});
-  });
-  
-  $("#bSrch").click(function(){
-    $.getJSON('http://api.untappd.com/v3/beer_search?key=d655538d2bbdcad2157eb187361e3b86&q=deep%20ellum',function(json){
-      $.each(json.results, function(i,beer){
-     // this is where we do what we want with the beer
-	 $("#results").append('<p><img src="'+beer.beer_stamp+'" widt="48" height="48" />'+beer.beer_name+'</p>');
-		});
-    
-	});
-  });
-  
-  
-  
-});
-</script>		  
-
-
-</head>
-<body onload="initialize()">
-<h1>some stuff should appear below this</h1>
-
-<p id="label">Name:</p> 
-<p id="test">test</p></br>
-<button id="uName">User Name</button></br>
-<button id="uNum">User Number</button></br>
-<button id="uLoc">User Location</button></br>
-<button id="bSrch">Search Beers</button></br>
-<button type="button" onclick="loadXMLDoc()">Change Content</button></br>
-<div id="results"></div>Search results go where?</div>
-
-
-
-
-</body>
+    </script>
+  </head>
+  <body onload="onDeviceReady()">
+    <p id="geolocation">Finding geolocation...</p>
+  </body>
 </html>

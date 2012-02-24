@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
+ <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>
+
+      <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+	  
+	  
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<title>Places to Get Drunk [dotcom]</title>
+	<title>Places to Get Beers</title>
     <style type="text/css">
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
       #map_canvas { height: 100% }
     </style>
+	
     <script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false">
     </script>
@@ -17,7 +24,40 @@
 	  var request;
 	  var markersarray =[];
 
+	 
+	  
+	  function getMyLocation()
+	  {
+		navigator.geolocation.getCurrentPosition(GetMyLocationSuccess, onErrorLocation);
+	  }
+	  
+	
+	function GetMyLocationSuccess(position)
+	{
+	//document.write(" I made it");
+		var MyLocationNow = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+		var mapOptions = {
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+            center: MyLocationNow,
+			zoom: 16
+		};
+		
+        map = new google.maps.Map(document.getElementById('map_canvas'),mapOptions);
+				
+        request. location = MyLocationNow
+		
+			createMap();
+	}
+	
+	    function onErrorLocation(error) {
+        alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+    }
+	  
+	  
+	  
       function initialize() {
+	  
 		var denton = new google.maps.LatLng(33.216646,-97.133646);
 		var mapOptions = {
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -34,10 +74,21 @@
 		  keyword: "bar"
 		  
         };
-        infowindow = new google.maps.InfoWindow();
+		
+			createMap();
+      }
+	  
+	  function createMap()
+	  {
+	    infowindow = new google.maps.InfoWindow();
         var service = new google.maps.places.PlacesService(map);
         service.search(request, callback);
-      }
+	  
+	  }
+	  
+	  
+	  
+	  
 
       function callback(results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -47,10 +98,12 @@
         }
       }
 	  
+	  
 	  function changePlaces(type){
 		request.keyword=type;
-		var serv= new google.maps.places.PlacesService(map);
-		serv.search(request, callback);
+		createMap()
+	//	var serv= new google.maps.places.PlacesService(map);
+	//	serv.search(request, callback);
 	  }
 	  
 	  
@@ -58,12 +111,7 @@
 			clearOverlays();
 			changePlaces("bars");
 		}
-	  
-		function clickBarb(){
-			clearOverlays();
-			changePlaces("barbers");
-		}
-		
+	  		
 		function clickGroc(){
 			clearOverlays();
 			changePlaces("grocery");
@@ -116,10 +164,14 @@
     </script>
   </head>
   <body onload="initialize()">
-    <div id="map_canvas" style="width:100%; height:50%"></div>
+  
+  <!--  <body onload="initialize()">-->
+  
+    <div id="map_canvas" style="width:100%; height:75%;"></div>
 	<button id="change_type" onclick="clickBars()">Bars</button>
-	<button id="change_type" onclick="clickBarb()">Barbers</button>
 	<button id="change_type" onclick="clickGroc()">Grocery</button>
+	<button id="change_type" onclick="getMyLocation()">Update My Location</button>
 	<button id="clear_markers" onclick="clearOverlays()">Clear</button>
+
   </body>
 </html>
