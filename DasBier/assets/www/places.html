@@ -2,34 +2,41 @@
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<title>Places to Get Drunk [dotcom]</title>
     <style type="text/css">
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
       #map_canvas { height: 100% }
     </style>
-    <script type="text/javascript"
-      src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false">
-    </script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
     <script type="text/javascript">
 	  var map;
       var infowindow;
+	  var request;
+	  var markersarray =[];
 
       function initialize() {
 		var denton = new google.maps.LatLng(33.216646,-97.133646);
-        map = new google.maps.Map(document.getElementById('map_canvas'), {
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          center: denton,
-          zoom: 16
-        });
-
-        var request = {
+		var mapOptions = {
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+            center: denton,
+			zoom: 16
+		};
+		
+        map = new google.maps.Map(document.getElementById('map_canvas'),mapOptions);
+				
+        request = {
           location: denton,
           radius: 15000,
-          types: ['bar'],
-		  keyword: ""
+          types: [],
+		  keyword: "bar"
 		  
         };
-        infowindow = new google.maps.InfoWindow();
+        infowindow = new google.maps.InfoWindow({
+        	maxWidth:200
+        });
         var service = new google.maps.places.PlacesService(map);
         service.search(request, callback);
       }
@@ -41,7 +48,36 @@
           }
         }
       }
+	  
+	  function changePlaces(type){
+		request.keyword=type;
+		var serv= new google.maps.places.PlacesService(map);
+		serv.search(request, callback);
+	  }
+	  
+	  function clickSearch(){
+			clearOverlays();
+			changePlaces(document.getElementById('searchText').value);
+	  
+	  }
+	  
+	  function clickBars(){
+			clearOverlays();
+			changePlaces("bars");
+		}
+	  
+		
+		
+		function clearOverlays() {
+			if (markersarray) {
+				for (i in markersarray) {
+					markersarray[i].setMap(null);
+				}
+			}			
+		}		
 
+	  
+	  
       function createMarker(place) {
 	  var contentTxt;
         var placeLoc = place.geometry.location;
@@ -49,19 +85,28 @@
           map: map,
           position: place.geometry.location
         });
+		markersarray.push(marker);
 
         google.maps.event.addListener(marker, 'click', function() {
-          var request = {
+          var detailRequest = {
 		  reference: place.reference
 		  };
 		  
 		  service = new google.maps.places.PlacesService(map);
-			service.getDetails(request, deetz);
+			service.getDetails(detailRequest, deetz);
 
 			function deetz(place, status) {
 				if (status == google.maps.places.PlacesServiceStatus.OK) {
-				contentTxt = '<p>Name = '+place.name + '<p></p>' + '<p>Address = '+place.formatted_address;
+				contentTxt = 
+				'<p>Name = '+place.name + 
+				'<br>'+
+				'<img src="'+place.icon+'">'+
+				'<br>' + 
+				'<p>Address = '+place.formatted_address+
+				
+				'<br>';
 				infowindow.setContent(contentTxt);
+				
   }
 }
 		  
@@ -74,6 +119,14 @@
     </script>
   </head>
   <body onload="initialize()">
-    <div id="map_canvas" style="width:100%; height:50%"></div>
+    <div id="map_canvas" style="width:100%; height:75%"></div>
+	<br>
+	<input type="text" id="searchText" onkeydown="if (event.keyCode == 13) document.getElementById('search_button').click()">
+	<button id="search_button" onclick="clickSearch()">Search</button>
+	<br>
+	<button id="change_type" onclick="clickBars()">Bars</button>
+	
+	<br>
+	<button id="clear_markers" onclick="clearOverlays()">Clear</button>
   </body>
 </html>

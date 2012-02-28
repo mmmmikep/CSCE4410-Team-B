@@ -10,13 +10,14 @@
 
 		var doneMessage = "Doneski";
 		var errorMessage = "error";
-		var url = "http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep";
-		var key = "key=d655538d2bbdcad2157eb187361e3b86&";
-		
 			
-
-		
 	}
+	
+	function JSONgot(result){
+	      
+		  $("#label").html("Name:");
+		  $("#test").html(result.results.user.user_name); 
+		}
 	
 
 
@@ -58,11 +59,15 @@ xmlhttp.send();
 
 
 $(document).ready(function(){
-
-  
-
+	
+	var url = "http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep";
+	var key = "key=d655538d2bbdcad2157eb187361e3b86&";
+	var query = '&user=mmmmikep';
+	
+	
+	
   $("#uName").click(function(){
-	 $.getJSON('http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep',function(result){
+	 $.getJSON(url,function(result){
       
 	  $("#label").html("Name:");
 	  $("#test").html(result.results.user.user_name); 
@@ -70,8 +75,8 @@ $(document).ready(function(){
   });
   
   $("#uNum").click(function(){
-    $.getJSON('http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep',function(result){
-      var myJSON = result;
+    $.getJSON(url,function(result){
+      
 	  $("#label").html("User ID:");
 	  $("#test").html(result.results.user.uid);
     
@@ -79,20 +84,48 @@ $(document).ready(function(){
   });  
  
   $("#uLoc").click(function(){
-    $.getJSON('http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep',function(result){
-      var myJSON = result;
-	  $("#label").html("Location:");
+    $.getJSON(url,function(result){
+
+      $("#label").html("Location:");
 	  $("#test").html(result.results.user.location);
     
 	});
   });
   
   $("#bSrch").click(function(){
-    $.getJSON('http://api.untappd.com/v3/beer_search?key=d655538d2bbdcad2157eb187361e3b86&q=deep%20ellum',function(json){
+  <!--'http://api.untappd.com/v3/beer_search?key=d655538d2bbdcad2157eb187361e3b86&q=shiner' search syntax-->
+	var untappdAPIcall = 'http://api.untappd.com/v3/beer_search?key=d655538d2bbdcad2157eb187361e3b86&q='+$("#searchText").val();
+    $.getJSON(untappdAPIcall,function(json){
+		$("#results").html(untappdAPIcall);
+
       $.each(json.results, function(i,beer){
      // this is where we do what we want with the beer
-	 $("#results").append('<p><img src="'+beer.beer_stamp+'" widt="48" height="48" />'+beer.beer_name+'</p>');
+	 $("#results").append('<p><img src="'+beer.beer_stamp+'" widt="48" height="48">'+beer.beer_name+'</p>');
 		});
+    
+	});
+  });
+  
+  $("#updateInfo").click(function(){
+    $.getJSON(url,function(result){
+      	  
+	  if ($("#APIcall").val()==0) {
+		 $("#label").html("Name:");
+		  $("#test").html(result.results.user.user_name); 
+
+			}
+	
+	if ($("#APIcall").val()==1) {
+		 $("#label").html("User ID:");
+		  $("#test").html(result.results.user.uid); 
+
+			}
+			
+	if ($("#APIcall").val()==2) {
+		 $("#label").html("Location:");
+		  $("#test").html(result.results.user.location); 
+
+			}
     
 	});
   });
@@ -105,16 +138,21 @@ $(document).ready(function(){
 
 </head>
 <body onload="initialize()">
-<h1>some stuff should appear below this</h1>
+<h1>Da Biers</h1>
 
-<p id="label">Name:</p> 
-<p id="test">test</p></br>
-<button id="uName">User Name</button></br>
-<button id="uNum">User Number</button></br>
-<button id="uLoc">User Location</button></br>
-<button id="bSrch">Search Beers</button></br>
-<button type="button" onclick="loadXMLDoc()">Change Content</button></br>
-<div id="results"></div>Search results go where?</div>
+<p id="label">Welcome!</p> 
+<p id="test"></p><br>
+<select id="APIcall">
+ <option id="uName" value="0"> User Name</option>
+ <option id="uNum" value="1"> User Number</option>
+ <option id="uLoc" value="2"> User Location</option>
+</select>
+<button id="updateInfo">Update</button><br><br>
+
+<input type="text" id="searchText">
+<button id="bSrch">Search Beers</button><br>
+<div id="results">Enter a beer to search</div>
+
 
 
 
