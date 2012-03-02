@@ -21,18 +21,6 @@
 	
 
 
-	function processResponse(value){
-		document.getElementById("jname").innerHTML = value.results.user.user_name;
-	}
-	
-	function showUI(json)            
-	{        
-		alert("inside ShowUI");
-		var html=[ ];        
-		var ind = json.parse.results.user.user_name;        
-		html.push(ind);       
-		document.getElementById("jname").innerHTML =html;            
-	}	  
 </script> 
 
 <!--when run locally (ie, not on a webserver) there is an error for security reasons.  the URL json call should work when the page is live-->
@@ -40,22 +28,23 @@
 <!--http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep -->
 <!--file:///C:/Users/KRISTINAKICKASS/jsontest.txt-->
 <script type="text/javascript">
-function loadXMLDoc()
-{
-var xmlhttp = new XMLHttpRequest();
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-	var jsonstring = xmlhttp.responseText;
-	jsonstring=jsonstring.parse;
-    $("#label").html="Whatup";
-    }
-  }
-xmlhttp.open("GET","jsontest.txt",true);
-xmlhttp.send();
 
-}
+function beerclick(uid){
+	var bidURL = "http://api.untappd.com/v3/beer_info?key=d655538d2bbdcad2157eb187361e3b86&bid="+uid;
+	var backbutton = $("#results").html;
+	
+	$.getJSON(bidURL,function(result){
+	$("#results").html('<a href="http:/www.untappd.com/beer/'+uid+'"">Untappd Image Link</a><br>');
+       
+	 $("#results").append('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
+			 '<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
+			 '<p>--'+result.results.brewery+'</p><br>'+
+			 'My Rating: '+result.results.);
+		
+    
+	});
+  
+  }
 
 
 $(document).ready(function(){
@@ -63,6 +52,11 @@ $(document).ready(function(){
 	var url = "http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep";
 	var key = "key=d655538d2bbdcad2157eb187361e3b86&";
 	var query = '&user=mmmmikep';
+	
+	var userAPIcall = "http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=";
+	var beerAPIcall = "http://api.untappd.com/v3/beer_search?key=d655538d2bbdcad2157eb187361e3b86&sort=count&q=";
+	var beerInfocall = "http://api.untappd.com/v3/beer_info?key=d655538d2bbdcad2157eb187361e3b86&bid=";
+	var untappdAPIcall="";
 	
 	
 	
@@ -94,17 +88,28 @@ $(document).ready(function(){
   
   $("#bSrch").click(function(){
   <!--'http://api.untappd.com/v3/beer_search?key=d655538d2bbdcad2157eb187361e3b86&q=shiner' search syntax-->
-	var untappdAPIcall = 'http://api.untappd.com/v3/beer_search?key=d655538d2bbdcad2157eb187361e3b86&q='+$("#searchText").val();
+	untappdAPIcall = beerAPIcall+$("#searchText").val();
     $.getJSON(untappdAPIcall,function(json){
-		$("#results").html(untappdAPIcall);
+		$("#results").html("Tap a beer for more info!");
 
       $.each(json.results, function(i,beer){
      // this is where we do what we want with the beer
-	 $("#results").append('<p><img src="'+beer.beer_stamp+'" widt="48" height="48">'+beer.beer_name+'</p>');
+      $("#results").append('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic"  title="'+beer.beer_id+'" src="'+beer.beer_stamp+'" widt="48" height="48" />'+beer.beer_name+'</p>');
+
 		});
     
 	});
   });
+  
+  $("#uSrch").click(function(){
+		untappdAPIcall = userAPIcall+$("#searchTerm").val();
+		url = untappdAPIcall;
+	    $.getJSON(url,function(result){
+		$("#label").html(url);
+	    $("#test").html(result.results.user.user_name);
+	    
+		});
+	  });
   
   $("#updateInfo").click(function(){
     $.getJSON(url,function(result){
@@ -138,16 +143,20 @@ $(document).ready(function(){
 
 </head>
 <body onload="initialize()">
-<h1>Da Biers</h1>
+<h1>Beer Search</h1>
 
 <p id="label">Welcome!</p> 
 <p id="test"></p><br>
+<!-- <p>Enter a username to search for</p>
+<input type="text" id="searchTerm">
+<button id="uSrch">Search Users</button>
+<br>
 <select id="APIcall">
  <option id="uName" value="0"> User Name</option>
  <option id="uNum" value="1"> User Number</option>
  <option id="uLoc" value="2"> User Location</option>
-</select>
-<button id="updateInfo">Update</button><br><br>
+</select><br><br>
+<button id="updateInfo">Update</button><br><br>-->
 
 <input type="text" id="searchText">
 <button id="bSrch">Search Beers</button><br>
