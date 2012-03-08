@@ -43,7 +43,9 @@ function beerclick(uid){
 			 '<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
 			 '<p>--'+result.results.brewery+'</p><br>');
 	 
-	 if(result.results.your_rating){$.("#results").append('My Rating: '+result.results.your_rating);}
+	 if(result.results.your_rating){
+		 $("#results").append('My Rating: '+result.results.your_rating);}
+	 else $("#result").append('You should log in or something man')
 		
     
 	});
