@@ -1,19 +1,161 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+<meta http-equiv="Access-Control-Allow-Origin" content="http://api.untappd.com">
 <title>BierTime</title>
-<script type="text/javascript" charset="utf-8" src="phonegap1-4.js"></script>
-</head>
-<body>
-<h1>some stuff should appear below this</h1>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript">
 
-<p>Name: <span id="jname"></span><br /> </p>
-<script src="https://maps.googleapis.com/maps/api/place/search/json?location=-33.8670522,151.1957362&radius=500&types=food&name=Lucky&sensor=false&key=AIzaSyCk_hpX5XeQTywkBZtBMptnXQylxlldpC8">
-	var JSONObject = "https://maps.googleapis.com/maps/api/place/search/json?location=33.217436,-97.129555&radius=500&name=Lucky&sensor=false&key=AIzaSyCk_hpX5XeQTywkBZtBMptnXQylxlldpC8";
-	var myObject = JSON.parse(JSONObject);
-		document.getElementById("jname").innerHTML=myObject.results[0].name  
-		//document.getElementById("jphone").innerHTML=JSONObject.phone  
-</script>
+	function initialize(){
+
+		var doneMessage = "Doneski";
+		var errorMessage = "error";
+
+	}
+
+	function JSONgot(result){
+
+		  $("#label").html("Name:");
+		  $("#test").html(result.results.user.user_name); 
+		}
+
+
+
+	function processResponse(value){
+		document.getElementById("jname").innerHTML = value.results.user.user_name;
+	}
+
+	function showUI(json)            
+	{        
+		alert("inside ShowUI");
+		var html=[ ];        
+		var ind = json.parse.results.user.user_name;        
+		html.push(ind);       
+		document.getElementById("jname").innerHTML =html;            
+	}	  
+</script> 
+
+<!--when run locally (ie, not on a webserver) there is an error for security reasons.  the URL json call should work when the page is live-->
+<!--until then, we have a json test file to make sure the syntax for working with it works-->
+<!--http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep -->
+<!--file:///C:/Users/KRISTINAKICKASS/jsontest.txt-->
+<script type="text/javascript">
+function loadXMLDoc()
+{
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+	var jsonstring = xmlhttp.responseText;
+	jsonstring=jsonstring.parse;
+    $("#label").html="Whatup";
+    }
+  }
+xmlhttp.open("GET","jsontest.txt",true);
+xmlhttp.send();
+
+}
+
+
+$(document).ready(function(){
+
+	var url = "http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep";
+	var key = "key=d655538d2bbdcad2157eb187361e3b86&";
+	var query = '&user=mmmmikep';
+
+
+
+  $("#uName").click(function(){
+	 $.getJSON(url,function(result){
+      
+	  $("#label").html("Name:");
+	  $("#test").html(result.results.user.user_name); 
+	});
+  });
+  
+  $("#uNum").click(function(){
+    $.getJSON(url,function(result){
+      
+	  $("#label").html("User ID:");
+	  $("#test").html(result.results.user.uid);
+    
+	});
+  });  
+ 
+  $("#uLoc").click(function(){
+    $.getJSON(url,function(result){
+
+      $("#label").html("Location:");
+	  $("#test").html(result.results.user.location);
+    
+	});
+  });
+  
+  $("#bSrch").click(function(){
+  <!--'http://api.untappd.com/v3/beer_search?key=d655538d2bbdcad2157eb187361e3b86&q=shiner' search syntax-->
+	var untappdAPIcall = 'http://api.untappd.com/v3/beer_search?key=d655538d2bbdcad2157eb187361e3b86&q='+$("#searchText").val();
+    $.getJSON(untappdAPIcall,function(json){
+		$("#results").html(untappdAPIcall);
+
+      $.each(json.results, function(i,beer){
+     // this is where we do what we want with the beer
+	 $("#results").append('<p><img src="'+beer.beer_stamp+'" widt="48" height="48">'+beer.beer_name+'</p>');
+		});
+    
+	});
+  });
+  
+  $("#updateInfo").click(function(){
+    $.getJSON(url,function(result){
+      	  
+	  if ($("#APIcall").val()==0) {
+		 $("#label").html("Name:");
+		  $("#test").html(result.results.user.user_name); 
+
+			}
+
+	if ($("#APIcall").val()==1) {
+		 $("#label").html("User ID:");
+		  $("#test").html(result.results.user.uid); 
+
+			}
+
+	if ($("#APIcall").val()==2) {
+		 $("#label").html("Location:");
+		  $("#test").html(result.results.user.location); 
+
+			}
+    
+	});
+  });
+  
+  
+  
+});
+</script>		  
+
+
+</head>
+<body onload="initialize()">
+<h1>Da Biers</h1>
+
+<p id="label">Welcome!</p> 
+<p id="test"></p><br>
+<select id="APIcall">
+ <option id="uName" value="0"> User Name</option>
+ <option id="uNum" value="1"> User Number</option>
+ <option id="uLoc" value="2"> User Location</option>
+</select>
+<button id="updateInfo">Update</button><br><br>
+
+<input type="text" id="searchText">
+<button id="bSrch">Search Beers</button><br>
+<div id="results">Enter a beer to search</div>
+
+
+
+
 
 </body>
 </html>
