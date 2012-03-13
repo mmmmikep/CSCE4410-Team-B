@@ -23,6 +23,23 @@
 <!--file:///C:/Users/KRISTINAKICKASS/jsontest.txt-->
 <script type="text/javascript">
 
+function login() { 
+	
+	$.ajax({
+  url: "http://api.untappd.com/v3/",
+  password: "1ea8b3ac0640e44c27b3cb8a258a87f8",
+  username: "mmmmikep",
+  type: "GET",
+  dataType: "json",
+  success:function(msg) {
+  $("#results").html( msg );},
+  error: function(jqXHR, textStatus) {
+	$("#results").html("Request failed: " + textStatus );}
+});
+	
+}
+
+
 var url = "http://api.untappd.com/v3/user?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep";
 var key = "key=b6077c9e633e11b65375b25eea792597&";
 var query = '&user=mmmmikep';
@@ -36,21 +53,31 @@ function beerclick(uid){
 	var bidURL = "http://api.untappd.com/v3/beer_info?key=b6077c9e633e11b65375b25eea792597&bid="+uid;
 	var backbutton = $("#results").html;
 	
-	$.getJSON(bidURL,function(result){
-	$("#results").html('<a href="http:/www.untappd.com/beer/'+uid+'">Untappd Image Link</a><br>');
+	$.ajax({url:bidURL,
+			type:"GET",
+			dataType: "json",
+			username: "mmmmikep",
+			password: "1ea8b3ac0640e44c27b3cb8a258a87f8",
+			success:function(result){
+	
+			$("#results").html('<a href="http:/www.untappd.com/beer/'+uid+'">Untappd Image Link</a><br>');
        
-	 $("#results").append('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
-			 '<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
-			 '<p>--'+result.results.brewery+'</p><br>');
+			 $("#results").append('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
+			 	'<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
+			 	'<p>--'+result.results.brewery+'</p><br>My Rating: '+ result.results.your_rating);
 	 
-	 if(result.results.your_rating){
-		 $("#results").append('My Rating: '+result.results.your_rating);}
-	 else $("#result").append('You should log in or something man')
+	 		if(result.results.your_rating){
+				 $("#results").append('My Rating: '+result.results.your_rating);}
+			 else $("#result").append('You should log in or something man');
 		
     
-	});
-  
-  }
+			},
+			error: function(req, status, errThrown){
+				$("#results").html("error:" + req + status + errThrown);
+			}
+		  		
+  });
+	}
 
 
   function searchBeer(){
@@ -79,6 +106,8 @@ function beerclick(uid){
 
 <p id="label">Welcome!</p> 
 <p id="test"></p><br>
+<button id="login" onclick="login()">Login</button>
+<br>
 
 <input type="text" id="searchText">
 <button id="bSrch" onclick="searchBeer()">Search Beers</button><br>
