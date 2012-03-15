@@ -12,12 +12,12 @@
 <!--file:///C:/Users/KRISTINAKICKASS/jsontest.txt-->
 <script type="text/javascript">
 
-
+var authString;
 function initialize(){
 	 var username = 'mmmmikep';
 	 var password = 'icarus';
 	 var passwordHash = Crypto.MD5(password);
-	 var authString = btoa(username + ':' + passwordHash); 
+	 authString = btoa(username + ':' + passwordHash); 
 
 	 var url = "http://api.untappd.com/v3/user?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep";
 	 var key = "key=b6077c9e633e11b65375b25eea792597&";
@@ -70,12 +70,13 @@ function beerclick(uid){
 	var key = '';
 	var Bindex=0;
 
-	$("#results").html('<a href="http:/www.untappd.com/beer/'+uid+'">Untappd Image Link</a><br>');
+	$("#results").html('Searching for...');
     $("#results").append(uid);
 	
     $.ajax({url:bidURL,
     	type:"GET",
     	dataType: "json",
+    	beforeSend: function (xhr) {xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
     	success:function(result){
 
     	$("#results").html('<a href="http:/www.untappd.com/beer/'+uid+'">Untappd Image Link</a><br>');
@@ -83,10 +84,10 @@ function beerclick(uid){
     	$("#results").append('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
     	'<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
     	'<p>--'+result.results.brewery+'</p>');
+    	
+    	$("#results").append('My Rating: '+result.results.your_rating +"<br>");
 
-    	if(result.results.your_rating){
-    	$("#results").append('My Rating: '+result.results.your_rating);}
-    	else $("#result").append('You should log in or something man');
+    	if((result.results.your_rating)==undefined){$("#result").append('You should log in or something man');}
 
     	    
     	},
