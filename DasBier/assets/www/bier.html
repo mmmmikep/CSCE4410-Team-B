@@ -39,6 +39,7 @@ function initialize(){
 function beerlist(){
 	var bidURL = "http://api.untappd.com/v3/user_feed?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep";
 	var backbutton = $("#results").html;
+	$("#results").html("searching...");
 	
 	$.ajax(
 		{
@@ -49,8 +50,7 @@ function beerlist(){
 		      $.each(result.results, 
 		    		  function(i,beer){
 			     	// this is where we do what we want with the beer
-			      		$("#results").append('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.beer_stamp+'" widt="48" height="48" />'+beer.beer_name+'</p>');
-
+			      		$("#results").append('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.beer_stamp+'" width="48" height="48" />'+beer.beer_name+'</p>');
 					});	//end each function
 		      }, //end success
 		error: function(req, status, errThrown){
@@ -69,29 +69,32 @@ function beerclick(uid){
 	var backbutton = $("#results").html;
 	var key = '';
 	var Bindex=0;
-	$("#results").html('<a href="http:/www.untappd.com/beer/'+uid+'">Untappd Image Link</a><br>');
 
-    
+	$("#results").html('<a href="http:/www.untappd.com/beer/'+uid+'">Untappd Image Link</a><br>');
+    $("#results").append(uid);
 	
-	
-	$.ajax({url:bidURL,
-			dataType: "json",
-			beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
-			success:function(result){
-	
-       
-			 $("#results").append('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
-			 	'<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
-			 	'<p>--'+result.results.brewery+'</p><br>My Rating: '+ result.results.your_rating);
-			 //$("#results").append('<br><button id="bLoc" onclick="beerplaces('+uid+')">Find this Beer</button>');
-			 
-			 	 
-	 		},
-			error: function(req, status, errThrown){
-				$("#results").html("error:" + req + status + errThrown);
-			}
-		  		
-  });
+    $.ajax({url:bidURL,
+    	type:"GET",
+    	dataType: "json",
+    	success:function(result){
+
+    	$("#results").html('<a href="http:/www.untappd.com/beer/'+uid+'">Untappd Image Link</a><br>');
+    	       
+    	$("#results").append('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
+    	'<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
+    	'<p>--'+result.results.brewery+'</p>');
+
+    	if(result.results.your_rating){
+    	$("#results").append('My Rating: '+result.results.your_rating);}
+    	else $("#result").append('You should log in or something man');
+
+    	    
+    	},
+    	error: function(req, status, errThrown){
+    	$("#results").html("error:" + req + status + errThrown);
+    	}
+
+    	  });
 	}
 
 
@@ -121,7 +124,7 @@ function beerclick(uid){
 
 <p id="label">Welcome!</p> 
 <p id="test"></p><br>
-<button id="login" onclick="login()">Login</button>
+
 <br>
 <button id="beers" onclick="beerlist()">View my Beers</button>
 <br>
