@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title>JQuery Mobile AJAX</title>
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a2/jquery.mobile-1.0a2.min.css" />
+	<script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.0a2/jquery.mobile-1.0a2.min.js"></script>
+</head>
+
+<body>
+
+	<script>
+		$(function() {
+		
+		
+			$("#callAjax").click(function() {
+			
+				if( localStorage.length == 0)
+				{
+				
+				
+				
+				var theName = $.trim($("#theName").val());
+				
+					var password = $.trim($("#password").val());
+
+				if	(theName.length <= 0)
+				{
+					//call name pop up
+						document.write('Name is too short<br />');
+				} 
+				else if (password.length <= 0)
+				{
+					//call password pop up
+					document.write('password is too short<br />');
+				}
+					
+				if(theName.length > 0 && password.length > 0)
+				{
+			/*		$.ajax({
+					  type: "POST",
+					  url: "http://10.0.2.2/mobileajax/callajax.php",
+					  data: ({name: theName}),
+					  cache: false,
+					  dataType: "text",
+					  success: onSuccess
+					});*/
+					
+					localStorage.setItem(theName, password);
+					var itemKey = localStorage.key(0);
+					var values = localStorage.getItem(itemKey);
+					
+					
+					$("#resultLoga").html(itemKey);
+					$("#resultLogb").html(values);
+					
+					/*
+					document.write('You entered <br />Name: ' + itemKey + '<br />');
+					document.write('Password: ' + values + '<br />');*/
+					
+				/*	var keyname = window.localStorage.key(i);
+					// keyname is now equal to "key"
+					var value = window.localStorage.getItem("key");
+					// value is now equal to "value"
+					window.localStorage.removeItem("key");
+					window.localStorage.setItem("key2", "value2");*/
+					
+				}
+				
+				}else 
+				{
+						var itemKey = localStorage.key(0);
+						var values = localStorage.getItem(itemKey);
+						document.write('You Already have data <br />');
+						document.write('You entered <br />Name: ' + itemKey + '<br />');
+						document.write('Password: ' + values + '<br />');
+				}
+				
+				
+			});
+
+	/*		$("#resultLog").ajaxError(function(event, request, settings, exception) {
+			  $("#resultLog").html("Error Calling: " + settings.url + "<br />HTPP Code: " + request.status);
+			});*/
+			
+			function ClearData()
+			{
+			 localStorage.clear();
+			}
+
+			function onSuccess(data)
+			{
+		/*		$("#resultLog").html("Result: " + data);*/
+			}
+
+		});
+	</script>
+
+    <div data-role="page" id="indexPage">
+        <div data-role="header">
+            <h1>Sign-In</h1>
+        </div>
+        <div data-role="content">
+			<div data-role="fieldcontain">
+				<label for="theName">Please enter your Username:</label>
+				<input type="text" id="theName" name="theName" value="" />
+			</div>
+			
+			<div data-role="fieldcontain">
+	         <label for="password">Password:</label>
+	         <input type="password" name="password" id="password" value="" />
+			</div>
+			
+			<input id="callAjax" type="button" value="Enter" />
+			
+			<button id="change_type" onclick="ClearData()">Clear</button>
+			
+			<div id="resultLoga"></div>
+			<div id="resultLogb"></div>
+        </div>
+
+        <div data-role="footer">
+        	<h1>Your Info</h1>
+        </div>
+    </div>
+	
+	
+	
+	<!-- Start of third page: #popup -->
+<div data-role="page" id="popup">
+
+	<div data-role="header" data-theme="e">
+		<h1>Dialog</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">	
+		<h2>Popup</h2>
+		<p>I have an id of "popup" on my page container and only look like a dialog because the link to me had a <code>data-rel="dialog"</code> attribute which gives me this inset look and a <code>data-transition="pop"</code> attribute to change the transition to pop. Without this, I'd be styled as a normal page.</p>		
+		<p><a href="#one" data-rel="back" data-role="button" data-inline="true" data-icon="back">Back to page "one"</a></p>	
+	</div><!-- /content -->
+	
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div><!-- /footer -->
+</div><!-- /page popup -->
+	
+
+</body>
+</html>

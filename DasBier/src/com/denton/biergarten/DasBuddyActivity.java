@@ -10,6 +10,6 @@ public class DasBuddyActivity extends DroidGap {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.loadUrl("file:///android_asset/www/buddy.html");
+        super.loadUrl("file:///android_asset/www/AjaxUser.html");
     }
 }
