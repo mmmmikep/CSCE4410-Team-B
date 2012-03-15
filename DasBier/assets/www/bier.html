@@ -1,21 +1,10 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Access-Control-Allow-Origin" content="http://api.untappd.com">
+<meta>
 <title>BierTime</title>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-<script type="text/javascript">
-
-	function initialize(){
-
-		var doneMessage = "Doneski";
-		var errorMessage = "error";
-			
-	}
-	
-	
-
-</script> 
+<script type="text/javascript" src="http://crypto-js.googlecode.com/files/2.5.3-crypto-md5.js"></script> 
 
 <!--when run locally (ie, not on a webserver) there is an error for security reasons.  the URL json call should work when the page is live-->
 <!--until then, we have a json test file to make sure the syntax for working with it works-->
@@ -23,55 +12,81 @@
 <!--file:///C:/Users/KRISTINAKICKASS/jsontest.txt-->
 <script type="text/javascript">
 
-function login() { 
+
+function initialize(){
+	 var username = 'mmmmikep';
+	 var password = 'icarus';
+	 var passwordHash = Crypto.MD5(password);
+	 var authString = btoa(username + ':' + passwordHash); 
+
+	 var url = "http://api.untappd.com/v3/user?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep";
+	 var key = "key=b6077c9e633e11b65375b25eea792597&";
+	 var query = '&user=mmmmikep';
+
+	 var userAPIcall = "http://api.untappd.com/v3/user?key=b6077c9e633e11b65375b25eea792597&user=";
+	 var beerAPIcall = "http://api.untappd.com/v3/beer_search?key=b6077c9e633e11b65375b25eea792597&sort=count&q=";
+	 var beerInfocall = "http://api.untappd.com/v3/beer_info?key=b6077c9e633e11b65375b25eea792597&bid=";
+	 var untappdAPIcall="";
+
+
+		
+}
+
+
+
+
+
+function beerlist(){
+	var bidURL = "http://api.untappd.com/v3/user_feed?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep";
+	var backbutton = $("#results").html;
 	
-	$.ajax({
-  url: "http://api.untappd.com/v3/",
-  password: "1ea8b3ac0640e44c27b3cb8a258a87f8",
-  username: "mmmmikep",
-  type: "GET",
-  dataType: "json",
-  success:function(msg) {
-  $("#results").html( msg );},
-  error: function(jqXHR, textStatus) {
-	$("#results").html("Request failed: " + textStatus );}
-});
+	$.ajax(
+		{
+		url:bidURL,
+		dataType: "json",		
+		success:function(result){
+			$("#results").html("Tap a beer for more info!");
+		      $.each(result.results, 
+		    		  function(i,beer){
+			     	// this is where we do what we want with the beer
+			      		$("#results").append('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.beer_stamp+'" widt="48" height="48" />'+beer.beer_name+'</p>');
+
+					});	//end each function
+		      }, //end success
+		error: function(req, status, errThrown){
+				$("#results").html("error:" + req + status + errThrown);
+			}
+		  		
+  });
 	
 }
 
 
-var url = "http://api.untappd.com/v3/user?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep";
-var key = "key=b6077c9e633e11b65375b25eea792597&";
-var query = '&user=mmmmikep';
 
-var userAPIcall = "http://api.untappd.com/v3/user?key=b6077c9e633e11b65375b25eea792597&user=";
-var beerAPIcall = "http://api.untappd.com/v3/beer_search?key=b6077c9e633e11b65375b25eea792597&sort=count&q=";
-var beerInfocall = "http://api.untappd.com/v3/beer_info?key=b6077c9e633e11b65375b25eea792597&bid=";
-var untappdAPIcall="";
 
 function beerclick(uid){
 	var bidURL = "http://api.untappd.com/v3/beer_info?key=b6077c9e633e11b65375b25eea792597&bid="+uid;
 	var backbutton = $("#results").html;
+	var key = '';
+	var Bindex=0;
+	$("#results").html('<a href="http:/www.untappd.com/beer/'+uid+'">Untappd Image Link</a><br>');
+
+    
+	
 	
 	$.ajax({url:bidURL,
-			type:"GET",
 			dataType: "json",
-			username: "mmmmikep",
-			password: "1ea8b3ac0640e44c27b3cb8a258a87f8",
+			beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
 			success:function(result){
 	
-			$("#results").html('<a href="http:/www.untappd.com/beer/'+uid+'">Untappd Image Link</a><br>');
        
 			 $("#results").append('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
 			 	'<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
 			 	'<p>--'+result.results.brewery+'</p><br>My Rating: '+ result.results.your_rating);
-	 
-	 		if(result.results.your_rating){
-				 $("#results").append('My Rating: '+result.results.your_rating);}
-			 else $("#result").append('You should log in or something man');
-		
-    
-			},
+			 //$("#results").append('<br><button id="bLoc" onclick="beerplaces('+uid+')">Find this Beer</button>');
+			 
+			 	 
+	 		},
 			error: function(req, status, errThrown){
 				$("#results").html("error:" + req + status + errThrown);
 			}
@@ -107,6 +122,8 @@ function beerclick(uid){
 <p id="label">Welcome!</p> 
 <p id="test"></p><br>
 <button id="login" onclick="login()">Login</button>
+<br>
+<button id="beers" onclick="beerlist()">View my Beers</button>
 <br>
 
 <input type="text" id="searchText">

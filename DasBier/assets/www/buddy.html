@@ -1,11 +1,113 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>PlaceTime</title>
-<script type="text/javascript" charset="utf-8" src="phonegap1-4.js"></script>
+<meta http-equiv="Access-Control-Allow-Origin" content="http://api.untappd.com">
+<title>Global Feed</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript">
+
+function initialize(){
+
+var doneMessage = "complete";
+var errorMessage = "error";
+
+}
+
+function JSONgot(result){
+
+$("#label").html("Name:");
+$("#test").html(result.results.user.user_name);
+}
+
+
+
+function processResponse(value){
+document.getElementById("jname").innerHTML = value.results.user.user_name;
+}
+
+function showUI(json)
+{
+alert("inside ShowUI");
+var html=[ ];
+var ind = json.parse.results.user.user_name;
+html.push(ind);
+document.getElementById("jname").innerHTML =html;
+}
+</script>
+
+
+<script type="text/javascript">
+function loadXMLDoc()
+{
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+var jsonstring = xmlhttp.responseText;
+jsonstring=jsonstring.parse;
+    $("#label").html="Whatup";
+    }
+  }
+xmlhttp.open("GET","jsontest.txt",true);
+xmlhttp.send();
+
+}
+
+
+$(document).ready(function(){
+
+var url = "http://api.untappd.com/v3/user?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep";
+var key = "key=b6077c9e633e11b65375b25eea792597&";
+var query = '&user=mmmmikep';
+ 
+ 
+  $("#uLoc").click(function(){
+    $.getJSON(url,function(result){
+
+      $("#label").html("Location:");
+$("#test").html(result.results.user.location);
+    
+});
+  });
+  
+  $("#getFeed").click(function(){
+var untappdAPIcall = 'http://api.untappd.com/v3/thepub?key=b6077c9e633e11b65375b25eea792597&geolat=33.216646&geolng=-97.133646';
+    $.getJSON(untappdAPIcall,function(json){
+$("#results").html("All the drunks in Denton:");
+
+      $.each(json.results, function(i,results){
+     // this is where we do what we want with the beer
+$("#results").append('<p><img src="'+results.beer_stamp+'" widt="48" height="48">'+results.beer_name+'</p>');
+$("#results").append('&nbsp;&nbsp;&nbsp;----' + results.user.user_name + ' at ' + results.venue_name + '<br>');
+$("#results").append(results.created_at +'<br>');
+$("#results").append("<hr>");
+});
+    
+});
+  });
+  
+  
+  
+});
+</script>
+
+
 </head>
-<body>
-<h1>What are friends for?</h1>
-<h2>Find out what your friends are drinking, and where!</h2>
+<body onload="initialize()">
+<h1>Global Feed</h1>
+
+<p id="label">Welcome!</p>
+<p id="test"></p><br>
+<select id="APIcall"></select>
+
+<button id="getFeed">Update Feed</button><br>
+<button id="uLoc">UserLocationTest</button>
+<div id="results"></div>
+
+
+
+
+
 </body>
 </html>
