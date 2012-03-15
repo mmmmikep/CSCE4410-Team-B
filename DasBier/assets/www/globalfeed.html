@@ -6,8 +6,7 @@
 <title>Global Feed</title>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script><script type="text/javascript">
+<script type="text/javascript">
 
 function initialize(){
 
@@ -20,7 +19,6 @@ var errorMessage = "error";
 
 
 <script type="text/javascript">
-
 
 
 $(document).ready(function(){
@@ -46,9 +44,11 @@ $("#results").html("All the drunks in Denton:");
 
       $.each(json.results, function(i,results){
      // this is where we do what we want with the beer
-$("#results").append('<p><img src="'+results.beer_stamp+'" widt="48" height="48">'+results.beer_name+'</p>');
-$("#results").append('&nbsp;&nbsp;&nbsp;----' + results.user.user_name + ' at ' + results.venue_name + '<br>');
-$("#results").append(results.created_at +'<br>');
+$("#results").append('<p><img src="'+results.beer_stamp+'" widt="48" height="48"></p>');
+$("#results").append('<b>'+ results.user.user_name + '</b> is drinking '+results.beer_name+' at ' + results.venue_name + '<br>');
+var create= results.created_at.substring (0,results.created_at.length-6)
+
+$("#results").append(create +'<br>');
 $("#results").append("<hr>");
 });
     
@@ -63,12 +63,10 @@ $("#results").append("<hr>");
 
 </head>
 <body onload="initialize()">
-<div data-role="page">
-<div data-role="header" >
-<h1>Denton Feed</h1></div></div>
+
+<h1>Denton Feed</h1>
 
 
-<p id="label">Welcome!</p>
 <p id="test"></p><br>
 
 
