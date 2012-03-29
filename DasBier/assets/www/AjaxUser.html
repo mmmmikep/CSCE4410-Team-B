@@ -17,55 +17,55 @@
 			
 				if( localStorage.length == 0)
 				{
-				
-				
-				
-				var theName = $.trim($("#theName").val());
-				
-					var password = $.trim($("#password").val());
+					
+					
+					
+					var theNameV = $.trim($("#theNameW").val());
+					
+						var passwordV = $.trim($("#passwordW").val());
 
-				if	(theName.length <= 0)
-				{
-					//call name pop up
-						document.write('Name is too short<br />');
-				} 
-				else if (password.length <= 0)
-				{
-					//call password pop up
-					document.write('password is too short<br />');
-				}
-					
-				if(theName.length > 0 && password.length > 0)
-				{
-			/*		$.ajax({
-					  type: "POST",
-					  url: "http://10.0.2.2/mobileajax/callajax.php",
-					  data: ({name: theName}),
-					  cache: false,
-					  dataType: "text",
-					  success: onSuccess
-					});*/
-					
-					localStorage.setItem(theName, password);
-					var itemKey = localStorage.key(0);
-					var values = localStorage.getItem(itemKey);
-					
-					
-					$("#resultLoga").html(itemKey);
-					$("#resultLogb").html(values);
-					
-					/*
-					document.write('You entered <br />Name: ' + itemKey + '<br />');
-					document.write('Password: ' + values + '<br />');*/
-					
-				/*	var keyname = window.localStorage.key(i);
-					// keyname is now equal to "key"
-					var value = window.localStorage.getItem("key");
-					// value is now equal to "value"
-					window.localStorage.removeItem("key");
-					window.localStorage.setItem("key2", "value2");*/
-					
-				}
+					if	(theNameV.length <= 0)
+					{
+						//call name pop up
+							document.write('Name is too short<br />');
+					} 
+					else if (passwordV.length <= 0)
+					{
+						//call password pop up
+						document.write('password is too short<br />');
+					}
+						
+					if(theNameV.length > 0 && passwordV.length > 0)
+					{
+				/*		$.ajax({
+						  type: "POST",
+						  url: "http://10.0.2.2/mobileajax/callajax.php",
+						  data: ({name: theName}),
+						  cache: false,
+						  dataType: "text",
+						  success: onSuccess
+						});*/
+						
+						localStorage.setItem(theNameV, passwordV);
+						var itemKey = localStorage.key(0);
+						var values = localStorage.getItem(itemKey);
+						
+						
+						$("#resultLoga").html(itemKey);
+						$("#resultLogb").html(values);
+						
+						/*
+						document.write('You entered <br />Name: ' + itemKey + '<br />');
+						document.write('Password: ' + values + '<br />');*/
+						
+					/*	var keyname = window.localStorage.key(i);
+						// keyname is now equal to "key"
+						var value = window.localStorage.getItem("key");
+						// value is now equal to "value"
+						window.localStorage.removeItem("key");
+						window.localStorage.setItem("key2", "value2");*/
+						
+					}
 				
 				}else 
 				{
@@ -102,13 +102,13 @@
         </div>
         <div data-role="content">
 			<div data-role="fieldcontain">
-				<label for="theName">Please enter your Username:</label>
-				<input type="text" id="theName" name="theName" value="" />
+				<label for="theNameW">Please enter your Username:</label>
+				<input type="text" id="theNameW" name="theNameW" value="" />
 			</div>
 			
 			<div data-role="fieldcontain">
-	         <label for="password">Password:</label>
-	         <input type="password" name="password" id="password" value="" />
+	         <label for="passwordW">Password:</label>
+	         <input type="passwordW" name="passwordW" id="passwordW" value="" />
 			</div>
 			
 			<input id="callAjax" type="button" value="Enter" />

@@ -11,8 +11,14 @@
 		var doneMessage = "Doneski";
 		var errorMessage = "error";
 		
-
-
+			if( localStorage.length != 0)
+				{
+					var itemKey = localStorage.key(0);
+					var values = localStorage.getItem(itemKey);
+						
+					$("#resultLoga").html(itemKey);
+					$("#resultLogb").html(values);
+				}
 	}
 
 
@@ -94,7 +100,8 @@ function beerclick(uid){
 <button id="bSrch" onclick="searchBeer()">Search Beers</button><br>
 <div id="results">Enter a beer to search</div>
 
-
+			<div id="resultLoga"></div>
+			<div id="resultLogb"></div>
 
 
 
