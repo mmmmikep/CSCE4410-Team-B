@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html>
-<head>
+<head >
 <meta http-equiv="Access-Control-Allow-Origin" content="http://api.untappd.com">
 <title>BierTime</title>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
@@ -101,17 +101,27 @@ function beerclick(uid){
 
 
 </head>
-<body onload="initialize()">
-<h1>Beer Search</h1>
+<body onload="initialize()" bgcolor="#6A2C0C" style="margin: 0; padding: 0">
+<style> body{ 
+background-image:url("http://i15.photobucket.com/albums/a377/TheAmelianator/1333058181_Drink_BeerPint-1.png");
+background-repeat:no-repeat;
+background-attachment:fixed;
+background-position:right; 
 
-<p id="label">Welcome!</p> 
+
+
+}</style>
+
+<h1><font color="#FFFBB1" face="Gill Sans">Beer Search</font></h1>
+
+
 <p id="test"></p><br>
 <button id="login" onclick="login()">Login</button>
 <br>
 
 <input type="text" id="searchText">
 <button id="bSrch" onclick="searchBeer()">Search Beers</button><br>
-<div id="results">Enter a beer to search</div>
+<div id="results"><font color="#FFFBB1" face="Gill Sans">Enter a beer to search</font></div>
 
 
 

@@ -3,6 +3,7 @@ package com.denton.biergarten;
 //import android.app.Activity;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
 
 
@@ -19,5 +20,6 @@ public class DasBierActivity extends Activity {
         mWebView = (WebView) findViewById(R.id.webview);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.loadUrl("file:///android_asset/www/bier.html");
+        mWebView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
     }
 }
