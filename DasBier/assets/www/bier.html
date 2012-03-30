@@ -60,11 +60,10 @@ function beerclick(uid){
 			password: "1ea8b3ac0640e44c27b3cb8a258a87f8",
 			success:function(result){
 
-			$("#results").html('<a href="http:/www.untappd.com/beer/'+uid+'">Untappd Image Link</a><br>');
+			$("#results").html('<a href="http:/www.untappd.com/beer/'+uid+'"></a><br>');
        
-			 $("#results").append('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
-			 	'<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
-			 	'<p>--'+result.results.brewery+'</p><br>My Rating: '+ result.results.your_rating);
+			 $("#results").append('<p><font color="#FFFBB1" face="Gill Sans"><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
+			 	'<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+'<p>Manufactured By: '+result.results.brewery+'</p><br>My Rating: '+ result.results.your_rating+'</font>');
 
 	 		if(result.results.your_rating){
 				 $("#results").append('My Rating: '+result.results.your_rating);}
@@ -89,7 +88,7 @@ function beerclick(uid){
 
       $.each(json.results, function(i,beer){
      // this is where we do what we want with the beer
-      $("#results").append('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.beer_stamp+'" widt="48" height="48" />'+beer.beer_name+'</p>');
+      $("#results").append('<font color="#FFFBB1" face="Gill Sans"><p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.beer_stamp+'" widt="48" height="48" />'+beer.beer_name+'</font></p>');
 
 		});
     
