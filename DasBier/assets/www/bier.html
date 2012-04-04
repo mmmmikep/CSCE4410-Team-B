@@ -20,7 +20,7 @@ function initialize(){
 	 authString = btoa(username + ':' + passwordHash); 
 
 	 var url = "http://api.untappd.com/v3/user?key=b6077c9e633e11b65375b25eea792597&user="+username;
-	 var key = "key=b6077c9e633e11b65375b25eea792597&";
+	 var key = "key=b6077c9e633e11b65375b25eea792597";
 	 var query = '&user=mmmmikep';
 
 	 var userAPIcall = "http://api.untappd.com/v3/user?key=b6077c9e633e11b65375b25eea792597&user=";
@@ -28,6 +28,7 @@ function initialize(){
 	 var beerInfocall = "http://api.untappd.com/v3/beer_info?key=b6077c9e633e11b65375b25eea792597&bid=";
 	 var untappdAPIcall="";
 	 var backbutton = "Back that thing up";
+	 beerTrends();
 
 
 		
@@ -35,10 +36,38 @@ function initialize(){
 
 
 
+//preference activity
+
+function beerTrends(){
+	var trendURL = "http://api.untappd.com/v3/trending?key=b6077c9e633e11b65375b25eea792597&type=local&limit=10&age=weekly&geolat=33.216646&geolng=-97.133646";
+	backbutton = $("#results").val;
+	
+	$.ajax(
+			{
+			url: trendURL,
+			dataType: "json",		
+			success:function(result){
+				$("#results").html("Popular beers in the Denton area<br>Click on a beer for more info!");
+				
+			      $.each(result.results, 
+			    		  function(i,beer){
+				     	// this is where we do what we want with the beer
+				      		$("#results").append('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.img+'" width="48" height="48" />'+beer.beer_name+'</p>');
+						});	//end each function
+			      }, //end success
+			error: function(req, status, errThrown){
+					$("#results").html("error:" + req + status + errThrown);
+				}
+			  		
+	  });
+	
+	
+}
 
 
-function beerlist(){
-	var bidURL = "http://api.untappd.com/v3/user_feed?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep";
+function beerlist(url){
+	var bidURL = url;
+	var testURL = 'http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep';
 	backbutton = $("#results").val;
 	$("#results").html("searching...");
 	
@@ -47,14 +76,20 @@ function beerlist(){
 		url:bidURL,
 		dataType: "json",		
 		success:function(result){
+			bidURL=bidURL+"&offset=25";
 			$("#results").html("Tap a beer for more info!");
 			
 		      $.each(result.results, 
 		    		  function(i,beer){
 			     	// this is where we do what we want with the beer
 			      		$("#results").append('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.beer_stamp+'" width="48" height="48" />'+beer.beer_name+'</p>');
+			     		
 					});	//end each function
-		      }, //end success
+					//next page button not working for some reason
+		      //$("#results").append('<button onclick="beerlist(http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep&offset=25)">Next Page</button><br>');
+		     // $("#results").append(bidURL);
+
+					}, //end success
 		error: function(req, status, errThrown){
 				$("#results").html("error:" + req + status + errThrown);
 			}
@@ -81,15 +116,17 @@ function beerclick(uid){
     	beforeSend: function (xhr) {xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
     	success:function(result){
 
-    	$("#results").html('<button id="checkIn" onclick="beerCheckin('+uid+')">Check In!</button>');
     	       
-    	$("#results").append('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
+    	$("#results").html('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
     	'<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
     	'<p>--'+result.results.brewery+'</p>');
     	
-    	$("#results").append('My Rating: '+result.results.your_rating +"<br>");
+    	$("#results").append('My Rating: '+result.results.your_rating +'<br>');
+    	$("#results").append('Average Rating: '+result.results.avg_rating +"<br>");
 
-    	if((result.results.your_rating)==undefined){$("#result").append('You should log in or something man');}
+    	$("#results").append('<button id="checkIn" onclick="beerCheckin('+uid+')">Check In!</button>');
+
+
 
     	    
     	},
@@ -132,7 +169,7 @@ function beerclick(uid){
 	    	data: { bid: id, gmt_offset: -6},
 	    	beforeSend: function (xhr) {xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
 	    	success:function(result){
-		    	$("#results").append(result.beer_details.beer_name +'<br><img src="'+result.beer_details.img+'" width=48 length=48><br>'+result.beer_details.brewery_name+'<br>');
+		    	$("#results").append(result.beer_details.beer_name +'<br><img src="'+result.beer_details.img+'" width="72" length="72"><br>'+result.beer_details.brewery_name+'<br><hr>');
 		    	$.each(result.recommendations, 
 			    		  function(i,rec){
 				     	// this is where we do what we want with the beer
@@ -157,20 +194,22 @@ function beerclick(uid){
 
 </head>
 <body onload="initialize()">
-<h1>Beer Search</h1>
+<h1>Das Bier</h1>
 
 <p id="label">Welcome!</p> 
-<p id="test"></p>
 
 <br>
-<button id="beers" onclick="beerlist()">View my Beers</button>
-<br>
 
+<p>Enter a beer to search</p>
 <input type="text" id="searchText">
-<button id="bSrch" onclick="searchBeer()">Search Beers</button><br>
+<button id="bSrch" onclick="searchBeer()">Search Beers</button>
+<button id="trend" onclick="beerTrends()">Popular Beers</button>
+
+<button id="beers" onclick="beerlist('http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep')">My Beers</button>
+<br><br>
 <!-- <button id="backButton" onclick="goBack()">Back</button> -->
 
-<div id="results">Enter a beer to search</div>
+<div id="results"></div>
 
 
 
