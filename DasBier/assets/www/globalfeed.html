@@ -40,15 +40,15 @@ $("#test").html(result.results.user.location);
   $("#getFeed").click(function(){
 var untappdAPIcall = 'http://api.untappd.com/v3/thepub?key=b6077c9e633e11b65375b25eea792597&geolat=33.216646&geolng=-97.133646';
     $.getJSON(untappdAPIcall,function(json){
-$("#results").html('<font color="#FFFBB1" face="Gill Sans"> All the drunks in Denton:</font>');
+$("#results").html('<font color="#6A2C0C" face="Gill Sans"> All the drunks in Denton:</font>');
 
       $.each(json.results, function(i,results){
      // this is where we do what we want with the beer
 $("#results").append('<p><img src="'+results.beer_stamp+'" widt="48" height="48"></p>');
-$("#results").append('<b><font color="#FFFBB1" face="Gill Sans">'+ results.user.user_name + '</b> is drinking '+results.beer_name+' at ' + results.venue_name + '<br></font>');
+$("#results").append('<b><font color="#6A2C0C" face="Gill Sans">'+ results.user.user_name + '</b> is drinking '+results.beer_name+' at ' + results.venue_name + '<br></font>');
 var create= results.created_at.substring (0,results.created_at.length-6)
 
-$("#results").append('<font color="#FFFBB1" face="Gill Sans">'+create +'<br></font>');
+$("#results").append('<font color="#6A2C0C" size="2" face="Gill Sans">'+create +'<br></font>');
 $("#results").append("<hr>");
 });
     
@@ -62,18 +62,18 @@ $("#results").append("<hr>");
 
 
 </head>
-<body onload="initialize()" bgcolor="#6A2C0C" style="margin: 0; padding: 0">
+<body onload="initialize()" bgcolor="#f5ad03" style="margin: 0; padding: 0">
 <style> body{ 
-background-image:url("http://i15.photobucket.com/albums/a377/TheAmelianator/1333058181_Drink_BeerPint-1.png");
+background-image:url("http://i15.photobucket.com/albums/a377/TheAmelianator/bubblybeer.jpg");
 background-repeat:no-repeat;
 background-attachment:fixed;
-background-position:right; 
+
 
 
 
 }</style>
 
-<h1><font color="#FFFBB1" face="Gill Sans">Denton Feed</font></h1>
+<h1><font color="#6A2C0C" face="Gill Sans">Denton Feed</font></h1>
 
 
 <p id="test"></p><br>

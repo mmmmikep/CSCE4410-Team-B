@@ -18,8 +18,10 @@ public class BierGartenActivity extends TabActivity {
 
         Resources res = getResources(); // Resource object to get Drawables
         TabHost tabHost = getTabHost();  // The activity TabHost
-        tabHost.setBackgroundColor(Color.parseColor("#6A2C0C"));
+        tabHost.setBackgroundColor(Color.parseColor("#f5ad03"));//change default tab background to beer color
+        tabHost.setBackgroundDrawable(getResources().getDrawable(R.drawable.bubblebeer));//set beer bubbles as image for tabs
         tabHost.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        
         
         tabHost.setVerticalScrollBarEnabled(false);
         TabHost.TabSpec spec;  // Reusable TabSpec for each tab
@@ -27,8 +29,7 @@ public class BierGartenActivity extends TabActivity {
 
         // Create an Intent to launch an Activity for the tab (to be reused)
         intent = new Intent().setClass(this, DasBierActivity.class);
-
-
+ 
         
         // Initialize a TabSpec for each tab and add it to the TabHost
         spec = tabHost.newTabSpec("bier").setIndicator("Das Bier",
