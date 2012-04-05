@@ -1,11 +1,64 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-<title>PlaceTime</title>
-<script type="text/javascript" charset="utf-8" src="phonegap1-4.js"></script>
-</head>
-<body>
-<h1>What are friends for?</h1>
-<h2>Find out what your friends are drinking, and where!</h2>
+
+	<head>
+		<title>BuddyTest</title>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+		<script type="text/javascript">
+		
+		// Read a page's GET URL variables and return them as an associative array.
+			function getUrlVars()
+			{
+				var vars = [], hash;
+				var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+				for(var i = 0; i < hashes.length; i++)
+				{
+					hash = hashes[i].split('=');
+					vars.push(hash[0]);
+					vars[hash[0]] = hash[1];
+				}
+				return vars;
+			}
+		
+		
+			function initialize()
+			{
+				$("#Sentence").html(" Made it init! ");
+				getUrlVars();
+				
+				var first = getUrlVars()["UN"];
+
+				// To get the second parameter
+				var second = getUrlVars()["PW"];
+				
+				
+				$("#Sentence").append(" Made it here! ");
+				
+				$("#Sentence").append(first+" Hello World! "+second );
+				//document.write(" Hello World! ");
+				
+				$("#Sentence").append(first+" Hello "+second);
+			
+			}
+
+			
+
+		</script>
+	</head>
+	
+	
+	
+<body onload="initialize()"> 
+
+	<div data-role="page">
+	<div data-role="header" >
+	<h1>Places</h1>
+	<div id="Sentence">Testing123</div>
+	
+	</div><!-- /header -->
+
+	</div><!-- /page -->
 </body>
+
 </html>

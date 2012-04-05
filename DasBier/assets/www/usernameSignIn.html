@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contact Example</title>
+
+<!--	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script> -->
+	
+    <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    // Wait for PhoneGap to load
+    //
+
+//    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // PhoneGap is ready
+    //
+    function onDeviceReady() {
+	
+			
+        window.localStorage.setItem("key", "value");
+        var keyname = window.localStorage.key(i);
+        // keyname is now equal to "key"
+        var value = window.localStorage.getItem("key");
+        // value is now equal to "value"
+        window.localStorage.removeItem("key");
+        window.localStorage.setItem("key2", "value2");
+        window.localStorage.clear();
+        // localStorage is now empty
+    }
+
+
+    </script>
+  </head>
+ <body onload="onDeviceReady()"> 
+  
+			<div data-role="fieldcontain">
+	         <label for="name">Username:</label>
+	         <input type="text" name="name" id="name" value=""  />
+			</div>
+			
+			<div data-role="fieldcontain">
+	         <label for="password">Password:</label>
+	         <input type="password" name="password" id="password" value="" />
+			</div>
+			
+			<input type="text" id="searchText">
+<button id="bSrch" onclick="searchBeer()">Search Beers</button><br>
+<div id="results">Enter a beer to search</div>
+
+  </body>
+</html>

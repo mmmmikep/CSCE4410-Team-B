@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>localStorage()</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        if (typeof(localStorage) == 'undefined' ) {
+            alert('Your browser does not support HTML5 localStorage. Try upgrading.');
+        } else {
+            getAllItems(); //load the items
+ 
+            $("#logForm").submit(function(){
+                var newPassW = new PassW();
+                var itemId = newPassW.getTime();
+                var values = new Array();
+                var user = $("input[name='user']").val();
+                var PassW = $("input[name='PassW']").val();
+ 
+                //strip html tags
+     //           user = user.replace(/(<([^>]+)>)/ig, "");
+                values.push(user);
+                values.push(PassW);
+ 
+                if (user != "" &&  PassW != "") {
+                    try {
+                        localStorage.setItem(itemId, values.join(';'));
+                    } catch (e) {
+                        if (e == QUOTA_EXCEEDED_ERR) {
+                            alert('Quota exceeded!');
+                        }
+                    }
+                } else {
+                    alert("All fields are required.");
+                }
+            });
+        }
+    });
+ 
+ /*   function getAllItems() {
+        var timeLog = ""; //the variable that will hold our html
+        var i = 0;
+        var logLength = localStorage.length-1; //how many items are in the database starting with zero
+ 
+        //now we are going to loop through each item in the database
+        for (i = 0; i <= logLength; i++) {
+            //lets setup some variables for the key and values
+            var itemKey = localStorage.key(i);
+            var values = localStorage.getItem(itemKey);
+            values = values.split(";"); //create an array of the values
+            var user = values[0];
+            var hours = values[1];
+            var PassW = values[2];
+ 
+            //now that we have the item, lets add it as a list item
+            timeLog += '<li><strong>'+user+'</strong>: '+hours+' hours - '+PassW+'</li>';
+        }
+ 
+        //if there were no items in the database
+        if (timeLog == "")
+            timeLog = '<li class="empty">Log Currently Empty</li>';
+ 
+        $("#theLog").html(timeLog); //upPassW the ul with the list items
+    }*/
+    </script>
+</head>
+<body>
+    <form id="logForm" method="post">
+        <input type="text" name="user" value="UserN">
+        <input type="text" name="passw" value="PassW">
+   <!--     <input type="text" name="passw" value="PassW" class="shortField">-->
+        <input type="submit" value="Enter">
+    </form>
+ 
+    <ul id="theLog">
+        <li>Loading&hellip;</li>
+    </ul>
+</body>
+</html>

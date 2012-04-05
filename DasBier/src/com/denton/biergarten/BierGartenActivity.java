@@ -1,88 +1,37 @@
 package com.denton.biergarten;
 
 import android.app.TabActivity;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TabHost;
-import android.widget.TextView;
 
 public class BierGartenActivity extends TabActivity {
     /** Called when the activity is first created. */
 	
-	///////3/29
-    PopupWindow popUp;
-    LinearLayout layout;
-    TextView tv;
-    LayoutParams params;
-    LinearLayout mainLayout;
-    Button but;
-    boolean click = true;
-    /////3/29
 	
 	
-	
-	
- /*   @Override
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);*/
+        setContentView(R.layout.main);
         
-        ////////////////////////3/29
+        /*
+        ////////Shared P
+        SharedPreferences sp=getSharedPreferences("Login", 0);
+        SharedPreferences.Editor Ed=sp.edit();
+        Ed.putString("Unm",ValueU );              
+        Ed.putString("Psw",ValueP);   
+        Ed.commit();
         
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-         super.onCreate(savedInstanceState);
-         popUp = new PopupWindow(this);
-         layout = new LinearLayout(this);
-         mainLayout = new LinearLayout(this);
-         tv = new TextView(this);
-         but = new Button(this);
-         but.setText("Click Me");
-         but.setOnClickListener(new View.OnClickListener() {
-
-          public void onClick(View v) {
-           if (click) {
-            popUp.showAtLocation(layout, Gravity.BOTTOM, 10, 10);
-            popUp.update(50, 50, 300, 80);
-            click = false;
-           } else {
-            popUp.dismiss();
-            click = true;
-           }
-          }
-
-         });
-         params = new LayoutParams(LayoutParams.WRAP_CONTENT,
-           LayoutParams.WRAP_CONTENT);
-         layout.setOrientation(LinearLayout.VERTICAL);
-         tv.setText("Hi this is a sample text for popup window");
-         layout.addView(tv, params);
-         popUp.setContentView(layout);
-         // popUp.showAtLocation(layout, Gravity.BOTTOM, 10, 10);
-         mainLayout.addView(but, params);
-         setContentView(mainLayout);
-        }
-}
+        ///retrieve info
+        SharedPreferences sp1=this.getSharedPreferences("Login",null);
+		String unm=sp1.getString("Unm", null);       
+		String pass = sp1.getString("Psw", null);
         
-        
-        
-        
-        
-        
-        
-        
-        
-        /////////////////////////////////////3/29 end
-/*
+        /////end of shared P
+      */
         Resources res = getResources(); // Resource object to get Drawables
         TabHost tabHost = getTabHost();  // The activity TabHost
         TabHost.TabSpec spec;  // Reusable TabSpec for each tab
@@ -113,4 +62,4 @@ public class BierGartenActivity extends TabActivity {
 
         tabHost.setCurrentTab(0);
     }
-}*/
+}

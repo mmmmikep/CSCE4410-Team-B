@@ -2,12 +2,12 @@ package com.denton.biergarten;
 
 //import android.app.Activity;
 import android.app.Activity;
-import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class DasBierActivity extends Activity {
     /** Called when the activity is first created. */
@@ -16,24 +16,42 @@ public class DasBierActivity extends Activity {
 	private SharedPreferences UandP;
 	public static final String PREFERENCE_FILENAME = "UandPStuff";
 	
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) 
+	{
 	    super.onCreate(savedInstanceState);
 	    UandP = this.getSharedPreferences("PREFERENCE_FILENAME", MODE_PRIVATE);
-	    if(UandP.getString("username", null) != null) {
+	    
+	    
+	    
+	    if(UandP.getString("username", null) != null) 
+	    {
 	        setContentView(R.layout.main);
-	            // do some stuff...
+	            // do rest of the code
+	        
+	        SharedPreferences sp1=this.getSharedPreferences("PREFERENCE_FILENAME", MODE_PRIVATE);
+			String unm=sp1.getString("username", null);       
+			String pass = sp1.getString("password", null);
+			
+			TextView tv = new TextView(this);
+		       tv.setText(unm+" Hello, Android " + pass);
+		       setContentView(tv);
+			
 	    }
-	    else {
+	    
+	    else 
+	    {
 	            setContentView(R.layout.popupuserpass);
 	            final EditText editText1 = (EditText) findViewById(R.id.editText1);
 	            final EditText editText2 = (EditText) findViewById(R.id.editText2);
 	            
 	            Button buttonA = (Button) findViewById(R.id.button1);
 
-	            buttonA.setOnClickListener(new View.OnClickListener() {
+	            buttonA.setOnClickListener(new View.OnClickListener() 
+	            {
 	            	
 	                @Override
-	                public void onClick(View v) {
+	                public void onClick(View v) 
+	                {
 	                    SharedPreferences.Editor UandPEditor = UandP.edit();
 	                    UandPEditor.putString("username", editText1.getText().toString());
 	                    UandPEditor.putString("password", editText2.getText().toString());
