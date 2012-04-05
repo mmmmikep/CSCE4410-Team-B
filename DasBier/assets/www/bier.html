@@ -13,6 +13,8 @@
 <script type="text/javascript">
 
 var authString;
+var distinctOffset;
+
 function initialize(){
 	 var username = 'mmmmikep';
 	 var password = 'icarus';
@@ -28,6 +30,7 @@ function initialize(){
 	 var beerInfocall = "http://api.untappd.com/v3/beer_info?key=b6077c9e633e11b65375b25eea792597&bid=";
 	 var untappdAPIcall="";
 	 var backbutton = "Back that thing up";
+	 distinctOffset = 0;
 	 beerTrends();
 
 
@@ -47,7 +50,7 @@ function beerTrends(){
 			url: trendURL,
 			dataType: "json",		
 			success:function(result){
-				$("#results").html("Popular beers in the Denton area<br>Click on a beer for more info!");
+				$("#status").html("Popular beers in the Denton area<br>Click on a beer for more info!");
 				
 			      $.each(result.results, 
 			    		  function(i,beer){
@@ -64,30 +67,44 @@ function beerTrends(){
 	
 }
 
-
+function myBeers(){
+	distinctOffset=0;
+	
+}
 function beerlist(url){
 	var bidURL = url;
-	var testURL = 'http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep';
+	var offset;
+	var testURL = 'http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep&offset=';
+	var nextURL = 'http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep&offset=' + offset;
+	var prevOffset;
+	
+	
 	backbutton = $("#results").val;
-	$("#results").html("searching...");
+	$("#status").html("searching...");
+
 	
 	$.ajax(
 		{
 		url:bidURL,
 		dataType: "json",		
 		success:function(result){
-			bidURL=bidURL+"&offset=25";
-			$("#results").html("Tap a beer for more info!");
+			
+			$("#status").html("Tap a beer for more info!");
+
+
 			
 		      $.each(result.results, 
 		    		  function(i,beer){
 			     	// this is where we do what we want with the beer
 			      		$("#results").append('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.beer_stamp+'" width="48" height="48" />'+beer.beer_name+'</p>');
-			     		
+			     		offset = i;
 					});	//end each function
+
+					distinctOffset = distinctOffset + offset + 1;
+					nextURL = "http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep&offset=" + distinctOffset;
+
 					//next page button not working for some reason
-		      //$("#results").append('<button onclick="beerlist(http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep&offset=25)">Next Page</button><br>');
-		     // $("#results").append(bidURL);
+		    $("#nav").html('<button onclick="beerlist(&#34;'+nextURL+'&#34;)">More Beer?</button><br>');
 
 					}, //end success
 		error: function(req, status, errThrown){
@@ -107,8 +124,8 @@ function beerclick(uid){
 	var key = '';
 	var Bindex=0;
 
-	$("#results").html('Searching for...');
-    $("#results").append(uid);
+	$("#status").html('Searching for...');
+    $("#status").append(uid);
 	
     $.ajax({url:bidURL,
     	type:"GET",
@@ -116,7 +133,7 @@ function beerclick(uid){
     	beforeSend: function (xhr) {xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
     	success:function(result){
 
-    	       
+    	$("#status").html("Rate, Review, and Check in to this beer!");       
     	$("#results").html('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
     	'<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
     	'<p>--'+result.results.brewery+'</p>');
@@ -124,7 +141,7 @@ function beerclick(uid){
     	$("#results").append('My Rating: '+result.results.your_rating +'<br>');
     	$("#results").append('Average Rating: '+result.results.avg_rating +"<br>");
 
-    	$("#results").append('<button id="checkIn" onclick="beerCheckin('+uid+')">Check In!</button>');
+    	$("#nav").html('<button id="checkIn" onclick="beerCheckin('+uid+')">Check In!</button>');
 
 
 
@@ -139,12 +156,13 @@ function beerclick(uid){
 
 
   function searchBeer(){
+	  clearPage();
 	  backbutton = $("#results").val;
-		$("#results").html("Searching...");
+		$("#status").html("Searching...");
 
 		untappdAPIcall = "http://api.untappd.com/v3/beer_search?key=b6077c9e633e11b65375b25eea792597&sort=count&q="+$("#searchText").val();
     $.getJSON("http://api.untappd.com/v3/beer_search?key=b6077c9e633e11b65375b25eea792597&sort=count&q="+$("#searchText").val(),function(json){
-		$("#results").html("Tap a beer for more info!");
+		$("#status").html("Tap a beer for more info!");
 
       $.each(json.results, function(i,beer){
      // this is where we do what we want with the beer
@@ -160,15 +178,18 @@ function beerclick(uid){
   }
   
   function beerCheckin(id){
-	  checkinURL="http://api.untappd.com/v3/checkin_test?key=b6077c9e633e11b65375b25eea792597";
-	  $("#results").html("checking in... ");
+	  checkinURL="http://api.untappd.com/v3/checkin?key=b6077c9e633e11b65375b25eea792597";
+	  $("#status").html("checking in... ");
+	  var review=prompt("Please write a short review of this beer","Reviewed with DentonBierGarten");
+	  var rating=prompt("Please review this beer on a scale from 1-5","0");
 	  
 	  $.ajax({url: checkinURL,
 	    	type:"POST",
 	    	dataType: "json",
-	    	data: { bid: id, gmt_offset: -6},
+	    	data: { bid: id, gmt_offset: -6, shout: review, rating_value: rating},
 	    	beforeSend: function (xhr) {xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
 	    	success:function(result){
+	    		$("#status").html("Success! See recommendations below");
 		    	$("#results").append(result.beer_details.beer_name +'<br><img src="'+result.beer_details.img+'" width="72" length="72"><br>'+result.beer_details.brewery_name+'<br><hr>');
 		    	$.each(result.recommendations, 
 			    		  function(i,rec){
@@ -189,6 +210,12 @@ function beerclick(uid){
 	  
   }
 
+  function clearPage(){
+	  $("#results").html("");
+	  $("#status").html("");
+	  $("#nav").html("");
+
+  }
 </script>		  
 
 
@@ -198,18 +225,21 @@ function beerclick(uid){
 
 <p id="label">Welcome!</p> 
 
-<br>
 
 <p>Enter a beer to search</p>
 <input type="text" id="searchText">
 <button id="bSrch" onclick="searchBeer()">Search Beers</button>
 <button id="trend" onclick="beerTrends()">Popular Beers</button>
+<button id="clearclick" onclick="clearPage()">Clear</button>
 
-<button id="beers" onclick="beerlist('http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep')">My Beers</button>
+
+<button id="beers" onclick="myBeers();clearPage();beerlist('http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep&offset=')">My Beers</button>
 <br><br>
 <!-- <button id="backButton" onclick="goBack()">Back</button> -->
-
+<div id="status"></div>
+<div id="nav"></div>
 <div id="results"></div>
+
 
 
 
