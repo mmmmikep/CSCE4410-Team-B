@@ -1,15 +1,15 @@
 package com.denton.biergarten;
 
 //import android.app.Activity;
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-public class DasBierActivity extends Activity {
+import com.phonegap.DroidGap;
+
+public class DasBierActivity extends DroidGap {
     /** Called when the activity is first created. */
     
   
@@ -31,10 +31,10 @@ public class DasBierActivity extends Activity {
 	        SharedPreferences sp1=this.getSharedPreferences("PREFERENCE_FILENAME", MODE_PRIVATE);
 			String unm=sp1.getString("username", null);       
 			String pass = sp1.getString("password", null);
-			
-			TextView tv = new TextView(this);
-		       tv.setText(unm+" Hello, Android " + pass);
-		       setContentView(tv);
+
+	        
+	        
+	        super.loadUrl("file:///android_asset/www/bier.html?UN="+unm+"&PW="+pass+"&");
 			
 	    }
 	    

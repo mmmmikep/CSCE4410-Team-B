@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Access-Control-Allow-Origin" content="http://api.untappd.com">
+<title>BierTime</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript">
+
+	function initialize(){
+
+		var doneMessage = "Doneski";
+		var errorMessage = "error";
+		
+			if( localStorage.length != 0)
+				{
+					var itemKey = localStorage.key(0);
+					var values = localStorage.getItem(itemKey);
+						
+					$("#resultLoga").html(itemKey);
+					$("#resultLogb").html(values);
+				}
+	}
+
+
+
+</script> 
+
+<!--when run locally (ie, not on a webserver) there is an error for security reasons.  the URL json call should work when the page is live-->
+<!--until then, we have a json test file to make sure the syntax for working with it works-->
+<!--http://api.untappd.com/v3/user?key=d655538d2bbdcad2157eb187361e3b86&user=mmmmikep -->
+<!--file:///C:/Users/KRISTINAKICKASS/jsontest.txt-->
+<script type="text/javascript">
+
+var url = "http://api.untappd.com/v3/user?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep";
+var key = "key=b6077c9e633e11b65375b25eea792597&";
+var query = '&user=mmmmikep';
+
+var userAPIcall = "http://api.untappd.com/v3/user?key=b6077c9e633e11b65375b25eea792597&user=";
+var beerAPIcall = "http://api.untappd.com/v3/beer_search?key=b6077c9e633e11b65375b25eea792597&sort=count&q=";
+var beerInfocall = "http://api.untappd.com/v3/beer_info?key=b6077c9e633e11b65375b25eea792597&bid=";
+var untappdAPIcall="";
+
+function beerclick(uid){
+	var bidURL = "http://api.untappd.com/v3/beer_info?key=b6077c9e633e11b65375b25eea792597&bid="+uid;
+	var backbutton = $("#results").html;
+
+	$.getJSON(bidURL,function(result){
+	$("#results").html('<a href="http:/www.untappd.com/beer/'+uid+'">Untappd Image Link</a><br>');
+       
+	 $("#results").append('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
+			 '<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
+			 '<p>--'+result.results.brewery+'</p><br>');
+
+	 if(result.results.your_rating){$("#results").append('My Rating: '+result.results.your_rating);}
+
+    
+	});
+  
+  }
+
+
+  function searchBeer(){
+  
+  		if (localStorage.length > 0)
+		{
+						var itemKey = localStorage.key(0);
+						var values = localStorage.getItem(itemKey);
+						document.write('You Already have data <br />');
+						document.write('You entered <br />Name: ' + itemKey + '<br />');
+						document.write('Password: ' + values + '<br />');
+		}
+		
+		$("#results").html("Searching...");
+
+		untappdAPIcall = "http://api.untappd.com/v3/beer_search?key=b6077c9e633e11b65375b25eea792597&sort=count&q="+$("#searchText").val();
+    $.getJSON("http://api.untappd.com/v3/beer_search?key=b6077c9e633e11b65375b25eea792597&sort=count&q="+$("#searchText").val(),function(json){
+		$("#results").html("Tap a beer for more info!");
+
+      $.each(json.results, function(i,beer){
+     // this is where we do what we want with the beer
+      $("#results").append('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.beer_stamp+'" widt="48" height="48" />'+beer.beer_name+'</p>');
+
+		});
+    
+	});
+  }
+  
+
+</script>		  
+
+
+</head>
+<body onload="initialize()">
+<h1>Beer Search</h1>
+
+<p id="label">Welcome!</p> 
+<p id="test"></p><br>
+
+<input type="text" id="searchText">
+<button id="bSrch" onclick="searchBeer()">Search Beers</button><br>
+<div id="results">Enter a beer to search</div>
+
+			<div id="resultLoga"></div>
+			<div id="resultLogb"></div>
+
+
+
+</body>
+</html>
