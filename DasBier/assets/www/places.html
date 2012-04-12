@@ -1,79 +1,89 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      #map_canvas { height: 100% }
-    </style>
-    <script type="text/javascript"
-      src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false">
-    </script>
-    <script type="text/javascript">
-	  var map;
-      var infowindow;
+<head>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>
 
-      function initialize() {
-		var denton = new google.maps.LatLng(33.216646,-97.133646);
-        map = new google.maps.Map(document.getElementById('map_canvas'), {
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          center: denton,
-          zoom: 16
-        });
 
-        var request = {
-          location: denton,
-          radius: 15000,
-          types: ['bar'],
-		  keyword: ""
-		  
-        };
-        infowindow = new google.maps.InfoWindow();
-        var service = new google.maps.places.PlacesService(map);
-        service.search(request, callback);
-      }
+<script>
+function initialize(){
+var d = new Date();
+var day = d.getDay();
 
-      function callback(results, status) {
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
-          for (var i = 0; i < results.length; i++) {
-            createMarker(results[i]);
-          }
-        }
-      }
 
-      function createMarker(place) {
-	  var contentTxt;
-        var placeLoc = place.geometry.location;
-        var marker = new google.maps.Marker({
-          map: map,
-          position: place.geometry.location
-        });
+	if(day == 0)//Sunday
+	{
 
-        google.maps.event.addListener(marker, 'click', function() {
-          var request = {
-		  reference: place.reference
-		  };
-		  
-		  service = new google.maps.places.PlacesService(map);
-			service.getDetails(request, deetz);
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Sun" );
 
-			function deetz(place, status) {
-				if (status == google.maps.places.PlacesServiceStatus.OK) {
-				contentTxt = '<p>Name = '+place.name + '<p></p>' + '<p>Address = '+place.formatted_address;
-				infowindow.setContent(contentTxt);
-  }
+	} else if (day == 1){
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Mon" );
+
+	}
+	else if (day == 2){
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Tues" );
+
+	}
+	else if (day == 3){
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Wed" );
+
+	}
+	else if (day == 4){
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Thur" );
+
+	}
+	else if (day == 5){
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Fri" );
+
+	}
+	else if (day == 6){
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Sat" );
+
+
+	}
+	else {
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Sat" );
+
+	}
+
+		$('#MainList').listview('refresh');
+
+
 }
-		  
-		  //infowindow.setContent(place.icon);		  
-          infowindow.open(map, this);
-        });
-      }
+</script>
 
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-  </head>
-  <body onload="initialize()"bgcolor="#f5ad03" style="margin: 0; padding: 0">
+
+</head> 
+
+ <body onload="initialize()"bgcolor="#f5ad03" style="margin: 0; padding: 0">
+
+<div data-role="page">
+<div data-role="header" >
+<h1>Places</h1>
+</div><!-- /header -->
+<div data-role="content">
+<!--<ul data-role="listview">-->
+<ul id="MainList" data-role="listview"> 
+
+<li><a href="file:///android_asset/www/TestPlacesB.html">Check-in</a></li>
+<li><a href="file:///android_asset/www/places2.html">Find Places</a></li>
+<li><a href="file:///android_asset/www/DentonCalender.html">Entertainment</a></li>
+<li><a href="file:///android_asset/www/CameraPlace.html">Post a Picture!</a></li>
+<li><a href="http://www.dentoncheapdrinks.com">Happy Hours</a></li>
+<li ><a id="HappyHour" href="file:///android_asset/www/viewfeeds.html">Today's Drink Specials</a></li>
+
+</ul>
+</div><!-- /content -->
+</div><!-- /page -->
+
+ 
 <style> body{ 
 background-image:url("http://i15.photobucket.com/albums/a377/TheAmelianator/bubblybeer.jpg");
 background-repeat:no-repeat;

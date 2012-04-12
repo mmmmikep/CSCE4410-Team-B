@@ -117,7 +117,7 @@ function beerclick(uid){
     	success:function(result){
 
     	       
-    	$("#results").html('<p><font color="#6A2C0C" face="Gill Sans"><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
+    	$("#results").html('<p><font color="#6A2C0C" face="Gill Sans"><img src="'+result.results.img+'" width="125" height="125""><br><b>'+result.results.name+'</b></p>'+
     	'<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
     	'<p>'+result.results.brewery+'</p></font>');
     	
