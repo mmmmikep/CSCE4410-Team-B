@@ -55,7 +55,7 @@ function beerTrends(){
 			      $.each(result.results, 
 			    		  function(i,beer){
 				     	// this is where we do what we want with the beer
-				      		$("#results").append('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.img+'" width="48" height="48" />'+beer.beer_name+'</p>');
+				      		$("#results").html('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.img+'" width="48" height="48" />'+beer.beer_name+'</p>');
 						});	//end each function
 			      }, //end success
 			error: function(req, status, errThrown){
@@ -190,7 +190,7 @@ function beerclick(uid){
 	    	beforeSend: function (xhr) {xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
 	    	success:function(result){
 	    		$("#status").html("Success! See recommendations below");
-		    	$("#results").append(result.beer_details.beer_name +'<br><img src="'+result.beer_details.img+'" width="72" length="72"><br>'+result.beer_details.brewery_name+'<br><hr>');
+		    	$("#results").html(result.beer_details.beer_name +'<br><img src="'+result.beer_details.img+'" width="72" length="72"><br>'+result.beer_details.brewery_name+'<br><hr>');
 		    	$.each(result.recommendations, 
 			    		  function(i,rec){
 				     	// this is where we do what we want with the beer
