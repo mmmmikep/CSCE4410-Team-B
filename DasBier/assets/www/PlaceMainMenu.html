@@ -5,10 +5,27 @@
 <script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>
 
 
-<script>
-function initialize(){
-var d = new Date();
-var day = d.getDay();
+<!--
+<link href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>-->
+
+
+
+
+<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+
+<script type="text/javascript">
+
+function initialize()
+{
+//new code 4/19/12
+document.addEventListener("deviceready", onDeviceReady, false);
+//end 4/19/12
+
+
+	var d = new Date();
+	var day = d.getDay();
 
 
 	if(day == 0)//Sunday
@@ -57,6 +74,44 @@ var day = d.getDay();
 	
 	
 }
+    
+    // PhoneGap is loaded and it is now safe to make calls PhoneGap methods
+    //
+    function onDeviceReady() {
+        // Register the event listener
+        document.addEventListener("menubutton", onMenuKeyDown, false);
+    }
+
+    // Handle the menu button
+    //
+    function onMenuKeyDown() 
+	{
+	
+		/////
+		/*
+		KeyEvent.prototype.menuTrigger = function()
+		{
+		  var e = document.createEvent('Events');
+		  e.initEvent('menuKeyDown');
+		  document.dispatchEvent(e);
+		}
+
+
+		document.addEventListener("menuKeyDown", function() {
+
+			alert('menu_pressed'); // Never happens
+		}, false);*/
+		////
+	
+		alert('menu_pressed'); 
+	
+    }
+	
+
+
+	
+	
+
 </script>
 
 
@@ -74,7 +129,10 @@ var day = d.getDay();
 <li><a href="file:///android_asset/www/TestPlacesB.html">Check-in</a></li>
 <li><a href="file:///android_asset/www/places2.html">Find Places</a></li>
 <li><a href="file:///android_asset/www/DentonCalender.html">Entertainment</a></li>
-<li><a href="file:///android_asset/www/CameraPlace.html">Post a Picture!</a></li>
+
+<!--<li><a href="file:///android_asset/www/CameraPlace.html">Post a Picture!</a></li>-->
+
+
 <li><a href="http://www.dentoncheapdrinks.com">Happy Hours</a></li>
 <li ><a id="HappyHour" href="file:///android_asset/www/viewfeeds.html">Today's Drink Specials</a></li>
 
