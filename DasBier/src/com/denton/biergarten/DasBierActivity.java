@@ -16,22 +16,34 @@ public class DasBierActivity extends DroidGap {
 	private SharedPreferences UandP;
 	public static final String PREFERENCE_FILENAME = "UandPStuff";
 	
+    public void superUrl(String m_s)
+    {
+
+        super.loadUrl(m_s);
+		    	
+    }
+	
 	public void onCreate(Bundle savedInstanceState) 
 	{
 	    super.onCreate(savedInstanceState);
 	    UandP = this.getSharedPreferences("PREFERENCE_FILENAME", MODE_PRIVATE);
 	    
 	    
+
+	    
 	    
 	    if(UandP.getString("username", null) != null) 
 	    {
 	        setContentView(R.layout.main);
 	            // do rest of the code
-	        
+	        /*
 	        SharedPreferences sp1=this.getSharedPreferences("PREFERENCE_FILENAME", MODE_PRIVATE);
 			String unm=sp1.getString("username", null);       
 			String pass = sp1.getString("password", null);
-
+*/
+	        
+	        String unm=UandP.getString("username", null);       
+			String pass = UandP.getString("password", null);
 	        
 	        
 	        super.loadUrl("file:///android_asset/www/bier.html?UN="+unm+"&PW="+pass+"&");
@@ -56,6 +68,19 @@ public class DasBierActivity extends DroidGap {
 	                    UandPEditor.putString("username", editText1.getText().toString());
 	                    UandPEditor.putString("password", editText2.getText().toString());
 	                    UandPEditor.commit();
+	                    
+	                    ///new code 4/19/12 to make it go to regular das beer.
+	                    setContentView(R.layout.main);
+	    	            // do rest of the code
+	    	       		    			
+		    	        String unm=UandP.getString("username", null);       
+		    			String pass = UandP.getString("password", null);
+			    	        		  
+		    	        String m_UserPass="file:///android_asset/www/bier.html?UN="+unm+"&PW="+pass+"&";
+
+		    			
+		    			superUrl(m_UserPass);
+		                    
 	                }
 
 	            }); 
