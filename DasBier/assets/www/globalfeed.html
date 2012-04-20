@@ -1,91 +1,190 @@
 
+
 <!DOCTYPE HTML>
+
 <html>
+
 <head>
+
 <meta>
+
 <title>Global Feed</title>
+
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://crypto-js.googlecode.com/files/2.5.3-crypto-md5.js"></script> 
+
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
+
 <script type="text/javascript">
+
+var authString;
+
 
 function initialize(){
 
+ var username = 'mmmmikep';
+     var password = 'icarus';
+     var passwordHash = Crypto.MD5(password);
+     authString = btoa(username + ':' + passwordHash);
+
+
 var doneMessage = "complete";
+
 var errorMessage = "error";
 
 }
 
-</script>
-
-
-<script type="text/javascript">
-
 
 $(document).ready(function(){
 
+
 var url = "http://api.untappd.com/v3/user?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep";
+
 var key = "key=b6077c9e633e11b65375b25eea792597&";
+
 var query = '&user=mmmmikep';
+
  
+
  
+
   $("#uLoc").click(function(){
     $.getJSON(url,function(result){
-
       $("#label").html("Location:");
-$("#test").html(result.results.user.location);
-    
+        $("#test").html(result.results.user.location);
+
 });
+
   });
+
   
+
+  $("#getFriendFeed").click(function(){
+
+  var untappdAPIcall = 'http://api.untappd.com/v3/feed?key=b6077c9e633e11b65375b25eea792597';
+
+      $.ajax({url:untappdAPIcall,
+        type:"GET",
+        dataType: "json",
+        beforeSend: function (xhr) {xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
+        success:function(json){
+
+            $("#results").html('<font color="#6A2C0C" face="Gill Sans"> What are my friends drinking?</font>');
+            $.each(json.results, function(i,results){
+
+                $("#results").append('<p><img src="'+results.beer_stamp+'" widt="48" height="48"></p>');
+                $("#results").append('<b><font color="#6A2C0C" face="Gill Sans">'+ results.user.user_name + '</b> is drinking '+results.beer_name+' at ' + results.venue_name + '<br></font>');
+    
+                var create= results.created_at.substring (0,results.created_at.length-6)
+
+
+                $("#results").append('<font color="#6A2C0C" size="2" face="Gill Sans">'+create +'<br></font>');
+
+                $("#results").append("<hr>");
+        });
+
+    },
+        error: function(req, status, errThrown){
+        $("#results").html("error:" + req + status + errThrown);
+        }
+
+          });
+  });
+
+  
+
+  
+
   $("#getFeed").click(function(){
+
 var untappdAPIcall = 'http://api.untappd.com/v3/thepub?key=b6077c9e633e11b65375b25eea792597&geolat=33.216646&geolng=-97.133646';
+
     $.getJSON(untappdAPIcall,function(json){
+
 $("#results").html('<font color="#6A2C0C" face="Gill Sans"> All the drunks in Denton:</font>');
 
+
       $.each(json.results, function(i,results){
+
      // this is where we do what we want with the beer
+
 $("#results").append('<p><img src="'+results.beer_stamp+'" widt="48" height="48"></p>');
+
 $("#results").append('<b><font color="#6A2C0C" face="Gill Sans">'+ results.user.user_name + '</b> is drinking '+results.beer_name+' at ' + results.venue_name + '<br></font>');
+
 var create= results.created_at.substring (0,results.created_at.length-6)
 
+
 $("#results").append('<font color="#6A2C0C" size="2" face="Gill Sans">'+create +'<br></font>');
+
 $("#results").append("<hr>");
+
 });
+
     
+
 });
+
+    
+
+        
+
   });
+
   
+
   
+
   
+
 });
+
 </script>
 
 
+
 </head>
+
 <body onload="initialize()" bgcolor="#f5ad03" style="margin: 0; padding: 0">
+
 <style> body{ 
+
 background-image:url("http://i15.photobucket.com/albums/a377/TheAmelianator/bubblybeer.jpg");
+
 background-repeat:no-repeat;
+
 background-attachment:fixed;
+
 
 
 
 
 }</style>
 
+
 <h1><font color="#6A2C0C" face="Gill Sans">Denton Feed</font></h1>
+
 
 
 <p id="test"></p><br>
 
 
-<button id="getFeed">Update Feed</button><br>
+
+<button id="getFeed">Global Feed</button><br>
+
+<button id="getFriendFeed">Friend Feed</button><br>
+
 <button id="uLoc">UserLocationTest</button>
+
 <div id="results"></div>
 
 
 
 
 
+
+
 </body>
+
 </html>
+
