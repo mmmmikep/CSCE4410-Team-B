@@ -5,6 +5,9 @@
 <title>BierTime</title>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://crypto-js.googlecode.com/files/2.5.3-crypto-md5.js"></script> 
+<script type="text/javascript" charset="utf-8" src="phonegap-1.4.1.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
+
 
 <!--when run locally (ie, not on a webserver) there is an error for security reasons.  the URL json call should work when the page is live-->
 <!--until then, we have a json test file to make sure the syntax for working with it works-->
@@ -42,7 +45,7 @@ function initialize(){
 //preference activity
 
 function beerTrends(){
-	var trendURL = "http://api.untappd.com/v3/trending?key=b6077c9e633e11b65375b25eea792597&type=local&limit=10&age=weekly&geolat=33.216646&geolng=-97.133646";
+	var trendURL = "http://api.untappd.com/v3/trending?key=b6077c9e633e11b65375b25eea792597&type=local&limit=10&age=monthly&geolat=33.216646&geolng=-97.133646";
 	backbutton = $("#results").val;
 	
 	$.ajax(
@@ -220,14 +223,21 @@ function beerclick(uid){
 
 
 </head>
-<body onload="initialize()">
-<h1>Das Bier</h1>
+<body onload="initialize()" bgcolor="#f5ad03" style="margin: 0; padding: 0">
+<style> body{
+background-image:url("http://i15.photobucket.com/albums/a377/TheAmelianator/bubblybeer.jpg");
+background-repeat:no-repeat;
+background-attachment:scrollable;
+ 
 
-<p id="label">Welcome!</p> 
 
 
-<p>Enter a beer to search</p>
-<input type="text" id="searchText">
+}</style>
+
+
+
+
+<p><font color="#6A2C0C" face="Gill Sans">Enter a beer to search</font></p><input type="text" id="searchText">
 <button id="bSrch" onclick="searchBeer()">Search Beers</button>
 <button id="trend" onclick="beerTrends()">Popular Beers</button>
 <button id="clearclick" onclick="clearPage()">Clear</button>

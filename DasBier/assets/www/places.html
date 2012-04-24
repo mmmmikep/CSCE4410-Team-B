@@ -8,17 +8,20 @@
       body { height: 100%; margin: 0; padding: 0 }
       #map_canvas { height: 100% }
     </style>
+    	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 
     <script type="text/javascript">
 	  var map;
       var infowindow;
 	  var request;
 	  var markersarray =[];
-
+	  var denton;
+	  var populararray =[213362,16764,20787,196627,103776,114265,214214];
+	  
       function initialize() {
-		var denton = new google.maps.LatLng(33.216646,-97.133646);
+		denton = new google.maps.LatLng(33.216646,-97.133646);
 		var mapOptions = {
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
             center: denton,
@@ -75,6 +78,82 @@
 				}
 			}			
 		}		
+		
+		function clickPop(){
+			
+			clickPopular(populararray[1]);
+		}
+		
+		function clickPopular(popID){
+			clearOverlays();
+			var placeLoc;
+			var placeName;
+			var placeAddr;
+			var placeIcon;
+			
+			var popURL;
+			
+			popURL="http://api.untappd.com/v3/venue_info?key=b6077c9e633e11b65375b25eea792597&venue_id="+popID;
+			$.ajax({
+					url: popURL,
+					dataType: "json",		
+					success:function(result){
+							placeLoc = new google.maps.LatLng(result.results.geolat,result.results.geolng);
+							placeName= result.results.name;
+							placeAddr= result.results.address;
+							placeIcon= result.results.img;
+							
+							$("#results").html(result.results.geolat + " " + result.results.geolng + " " + placeName + " " + placeAddr);
+
+						}, //end success
+					error: function(req, status, errThrown){
+							$("#results").html("error:" + req + status + errThrown);
+						}
+					  		
+			  }); //end AJAX
+
+			var contentTxt;
+	        
+	        var marker = new google.maps.Marker({
+	          map: map,
+	          position: placeLoc
+	        });
+			markersarray.push(marker);
+
+	        google.maps.event.addListener(marker, 'click', function() {
+	         			  			  
+	            $.ajax({url:"http://api.untappd.com/v3/venue_checkins?key=b6077c9e633e11b65375b25eea792597&venue_id="+populararray[0],
+	            	type:"GET",
+	            	dataType: "json",
+	            	success:function(result){
+	            		contentTxt = 
+	    					'<p>Name = '+placeName + 
+	    					'<br>'+
+	    					'<img src="'+placeIcon+'">'+
+	    					'<br>' + 
+	    					'<p>Address = '+placeAddr+
+	    					
+	    					'<br>' +
+	    					'<div id="barFeed"></div>';
+	    					$.each(result.results, function(i,checkin){
+	    					     // this is where we do what we want with the beer
+	    					      $("#barFeed").append('<p><img id="beerpic" title="'+checkin.checkin_id+'" src="'+checkin.beer_stamp+'" width="48" height="48" />'+checkin.beer_name+'</p>');
+
+	    							});
+	    					
+	    					
+	    					infowindow.setContent(contentTxt);
+	    			    },
+	            	error: function(req, status, errThrown){
+	            	$("#results").html("error:" + req + status + errThrown);
+	            	}
+
+	            	  }); //end AJAX
+					infowindow.open(map, this);
+			});
+			  
+	          
+	        } //end clickPopular()
 
 	  
 	  
@@ -125,8 +204,9 @@
 	<button id="search_button" onclick="clickSearch()">Search</button>
 	<br>
 	<button id="change_type" onclick="clickBars()">Bars</button>
-	
+	<button id="popBeers" onClick="clickPop()">Popular</button>
 	<br>
 	<button id="clear_markers" onclick="clearOverlays()">Clear</button>
+	<div id="results"></div>
   </body>
 </html>
