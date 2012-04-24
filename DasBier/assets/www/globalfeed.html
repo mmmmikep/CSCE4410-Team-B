@@ -8,7 +8,7 @@
 
 <meta>
 
-<title>Global Feed</title>
+<title>Denton Feed</title>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://crypto-js.googlecode.com/files/2.5.3-crypto-md5.js"></script> 
@@ -73,8 +73,8 @@ var query = '&user=mmmmikep';
             $.each(json.results, function(i,results){
 
                 $("#results").append('<p><img src="'+results.beer_stamp+'" widt="48" height="48"></p>');
-                $("#results").append('<b><font color="#6A2C0C" face="Gill Sans">'+ results.user.user_name + '</b> is drinking '+results.beer_name+' at ' + results.venue_name + '<br></font>');
-    
+                $("#results").append('<b><font color="#6A2C0C" face="Gill Sans">'+ results.user.user_name + '</b> is drinking '+results.beer_name+' <br></font>');
+                $("#results").append('<b><font color="#6A2C0C" face="Gill Sans">'+ results.venue_name +  '<br></font>');
                 var create= results.created_at.substring (0,results.created_at.length-6)
 
 
@@ -110,8 +110,8 @@ $("#results").html('<font color="#6A2C0C" face="Gill Sans"> All the drunks in De
 
 $("#results").append('<p><img src="'+results.beer_stamp+'" widt="48" height="48"></p>');
 
-$("#results").append('<b><font color="#6A2C0C" face="Gill Sans">'+ results.user.user_name + '</b> is drinking '+results.beer_name+' at ' + results.venue_name + '<br></font>');
-
+$("#results").append('<b><font color="#6A2C0C" face="Gill Sans">'+ results.user.user_name + '</b> is drinking '+results.beer_name+' <br></font>');
+$("#results").append('<b><font color="#6A2C0C" face="Gill Sans">'+ results.venue_name +  '<br></font>');
 var create= results.created_at.substring (0,results.created_at.length-6)
 
 
@@ -170,7 +170,7 @@ background-attachment:fixed;
 
 
 
-<button id="getFeed">Global Feed</button><br>
+<button id="getFeed">Global Feed</button>
 
 <button id="getFriendFeed">Friend Feed</button><br>
 
