@@ -54,11 +54,23 @@ public class BierGartenActivity extends TabActivity {
                       .setContent(intent);
         tabHost.addTab(spec);
         
+     /*   intent = new Intent().setClass(this, ResetUP.class);
+        spec = tabHost.newTabSpec("buddies").setIndicator("Das Buddies",
+                res.getDrawable(R.drawable.beerbuddylong))
+                      .setContent(intent);
+        tabHost.addTab(spec);*/
+        
         intent = new Intent().setClass(this, DasBuddyActivity.class);
         spec = tabHost.newTabSpec("buddies").setIndicator("Das Buddies",
                           res.getDrawable(R.drawable.beerbuddylong))
                       .setContent(intent);
         tabHost.addTab(spec);
+        
+      /*  intent = new Intent().setClass(this, ResetUP.class);
+        spec = tabHost.newTabSpec("testA").setIndicator("test1",
+                          res.getDrawable(R.drawable.beerbuddylong))
+                      .setContent(intent);
+        tabHost.addTab(spec);*/
 
         tabHost.setCurrentTab(0);
     }

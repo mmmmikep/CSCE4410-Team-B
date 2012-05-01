@@ -13,6 +13,22 @@ public class DasBuddyActivity extends DroidGap {
 	private SharedPreferences UandP;
 	public static final String PREFERENCE_FILENAME = "UandPStuff";
 	
+    protected void onResume() {
+        super.onResume();
+        
+        
+        String unm=UandP.getString("username", null);       
+		String pass = UandP.getString("password", null);
+        
+        
+        super.loadUrl("file:///android_asset/www/buddy.html?UN="+unm+"&PW="+pass+"&");
+        
+    
+
+        //...Now update your objects with preference values         
+    }
+	
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

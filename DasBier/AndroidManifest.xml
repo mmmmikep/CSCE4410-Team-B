@@ -63,6 +63,17 @@ android:anyDensity="true"
             </intent-filter>
         </activity>
         
+          <activity android:name=".ResetUP" android:label="@string/app_name"
+          android:theme="@android:style/Theme.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.TAB" />
+            </intent-filter>
+        </activity>
+        
+        
+       
+        
         <activity 
         	android:name="com.phonegap.DroidGap" 
         	android:label="@string/app_name" 
