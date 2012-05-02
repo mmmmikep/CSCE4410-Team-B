@@ -47,7 +47,7 @@ function beerTrends(){
 			url: trendURL,
 			dataType: "json",		
 			success:function(result){
-				$("#results").html('<font color="#6A2C0C" size="3.5" face="Gill Sans"><b>Popular beers in the Denton area</b><br>Click on a beer for more info!</font>');
+				$("#results").html('<font color="#6A2C0C" size="3.5" face="Gill Sans"><b>Popular beers in the Denton area</b><br>Click on a beer for more info!</font><hr>');
 
 			      $.each(result.results, 
 			    		  function(i,beer){
@@ -203,9 +203,9 @@ background-attachment:scrollable;
 
 }</style>
 
-<p><font color="#6A2C0C" face="Gill Sans">Enter a beer to search</font></p>
+<p><font color="#6A2C0C" face="Gill Sans" size="5"><b>Enter a beer to search</b></font></p>
 <input type="text" id="searchText">
-<button id="bSrch" onclick="searchBeer()">Search Beers</button>
+<button id="bSrch" onclick="searchBeer()"><span>Search&nbsp;&raquo;</span></button>
 <button id="trend" onclick="beerTrends()">Popular Beers</button>
 <button id="beers" onclick="beerlist('http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep')">My Beers</button>
 <br><br>

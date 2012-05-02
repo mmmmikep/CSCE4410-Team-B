@@ -1,0 +1,148 @@
+<html>
+<head>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>
+
+
+<!--
+<link href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>-->
+
+
+
+
+<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+
+<script type="text/javascript">
+
+function initialize()
+{
+//new code 4/19/12
+document.addEventListener("deviceready", onDeviceReady, false);
+//end 4/19/12
+
+
+	var d = new Date();
+	var day = d.getDay();
+
+
+	if(day == 0)//Sunday
+	{
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Sun" );
+
+	} else if (day == 1){
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Mon" );
+
+	}
+	else if (day == 2){
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Tues" );
+
+	}
+	else if (day == 3){
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Wed" );
+
+	}
+	else if (day == 4){
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Thur" );
+
+	}
+	else if (day == 5){
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Fri" );
+
+	}
+	else if (day == 6){
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Sat" );
+
+
+	}
+	else {
+
+		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Sat" );
+
+	}
+
+		$('#MainList').listview('refresh');
+
+
+}
+    
+    // PhoneGap is loaded and it is now safe to make calls PhoneGap methods
+    //
+    function onDeviceReady() {
+        // Register the event listener
+        document.addEventListener("menubutton", onMenuKeyDown, false);
+    }
+
+    // Handle the menu button
+    //
+    
+/*
+    function onMenuKeyDown() 
+	{
+	
+		/////
+		/*
+		KeyEvent.prototype.menuTrigger = function()
+		{
+		  var e = document.createEvent('Events');
+		  e.initEvent('menuKeyDown');
+		  document.dispatchEvent(e);
+		}
+
+
+		document.addEventListener("menuKeyDown", function() {
+
+			alert('menu_pressed'); // Never happens
+		}, false);*/
+		////
+
+	//	alert('menu_pressed'); 
+
+//    }
+    
+    
+
+
+
+
+
+
+</script>
+
+
+</head> 
+<body onload="initialize()"> 
+
+<div data-role="page">
+<div data-role="header" >
+<h1>Places</h1>
+</div><!-- /header -->
+<div data-role="content">
+<!--<ul data-role="listview">-->
+<ul id="MainList" data-role="listview"> 
+
+<li><a href="file:///android_asset/www/TestPlacesB.html">Check-in</a></li>
+<li><a href="file:///android_asset/www/places2.html">Find Places</a></li>
+<li><a href="file:///android_asset/www/DentonCalender.html">Entertainment</a></li>
+
+<!--<li><a href="file:///android_asset/www/CameraPlace.html">Post a Picture!</a></li>-->
+
+
+<li><a href="http://www.dentoncheapdrinks.com">Happy Hours</a></li>
+<li ><a id="HappyHour" href="file:///android_asset/www/viewfeeds.html">Today's Drink Specials</a></li>
+
+</ul>
+</div><!-- /content -->
+</div><!-- /page -->
+</body>
+</html>
+
