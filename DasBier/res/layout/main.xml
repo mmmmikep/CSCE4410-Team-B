@@ -16,7 +16,19 @@
             android:id="@android:id/tabcontent"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:padding="5dp" />
+            android:padding="5dp" >
+
+
+
+        </FrameLayout>
           
+    </LinearLayout>
+    
+    <LinearLayout>
+                    <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/untappd" />
     </LinearLayout>
 </TabHost>
