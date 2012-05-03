@@ -1,4 +1,243 @@
 <!DOCTYPE HTML>
+
+
+<html>
+
+<head>
+
+<meta>
+
+<title>Denton Feed</title>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://crypto-js.googlecode.com/files/2.5.3-crypto-md5.js"></script> 
+
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
+
+<script type="text/javascript">
+
+var authString;
+
+
+
+
+//Read a page's GET URL variables and return them as an associative array.
+function getUrlVars()
+{
+	var vars = [], hash;
+	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	for(var i = 0; i < hashes.length; i++)
+	{
+		hash = hashes[i].split('=');
+		vars.push(hash[0]);
+		vars[hash[0]] = hash[1];
+	}
+	return vars;
+}
+
+
+
+
+	
+	
+var username;
+
+
+function initialize(){
+		
+	getUrlVars();
+	
+	var first = getUrlVars()["UN"];
+
+	// To get the second parameter
+	var second = getUrlVars()["PW"];
+	
+	
+	$("#Sentence").append(" Made it here!: UN = ");
+	
+	$("#Sentence").append(first+" Second = "+second+ "   " );
+	//document.write(" Hello World! ");
+	
+	$("#Sentence").append(first+" Hello "+second);
+	
+// 	var username = 'mmmmikep';
+ 	 username = first;
+ 	
+//     var password = 'icarus';
+	var password = second;
+	
+     var passwordHash = Crypto.MD5(password);
+     
+     authString = btoa(username + ':' + passwordHash);
+
+	
+	var doneMessage = "complete";
+	
+	var errorMessage = "error";
+
+}
+
+
+$(document).ready(function(){
+
+
+var url = "http://api.untappd.com/v3/user?key=b6077c9e633e11b65375b25eea792597&user=" + username;
+
+
+var key = "key=b6077c9e633e11b65375b25eea792597&";
+
+//var query = '&user=mmmmikep';
+
+ 
+
+ 
+
+  $("#uLoc").click(function(){
+    $.getJSON(url,function(result){
+      $("#label").html("Location:");
+        $("#test").html(result.results.user.location);
+
+});
+
+  });
+
+  
+
+  $("#getFriendFeed").click(function(){
+
+  var untappdAPIcall = 'http://api.untappd.com/v3/feed?key=b6077c9e633e11b65375b25eea792597';
+
+      $.ajax({url:untappdAPIcall,
+        type:"GET",
+        dataType: "json",
+        beforeSend: function (xhr) {xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
+        success:function(json){
+
+            $("#results").html('<font color="#6A2C0C" face="Gill Sans"> What are my friends drinking?</font>');
+            $.each(json.results, function(i,results){
+
+                $("#results").append('<p><img src="'+results.beer_stamp+'" widt="48" height="48"></p>');
+                $("#results").append('<b><font color="#6A2C0C" face="Gill Sans">'+ results.user.user_name + '</b> is drinking '+results.beer_name+' <br></font>');
+                $("#results").append('<b><font color="#6A2C0C" face="Gill Sans">'+ results.venue_name +  '<br></font>');
+                var create= results.created_at.substring (0,results.created_at.length-6)
+
+
+                $("#results").append('<font color="#6A2C0C" size="2" face="Gill Sans">'+create +'<br></font>');
+
+                $("#results").append("<hr>");
+        });
+
+    },
+        error: function(req, status, errThrown){
+        $("#results").html("error:" + req + status + errThrown);
+        }
+
+          });
+  });
+
+  
+
+  
+
+  $("#getFeed").click(function(){
+
+var untappdAPIcall = 'http://api.untappd.com/v3/thepub?key=b6077c9e633e11b65375b25eea792597&geolat=33.216646&geolng=-97.133646';
+
+    $.getJSON(untappdAPIcall,function(json){
+
+$("#results").html('<font color="#6A2C0C" face="Gill Sans"> All the drunks in Denton:</font>');
+
+
+      $.each(json.results, function(i,results){
+
+     // this is where we do what we want with the beer
+
+$("#results").append('<p><img src="'+results.beer_stamp+'" widt="48" height="48"></p>');
+
+$("#results").append('<b><font color="#6A2C0C" face="Gill Sans">'+ results.user.user_name + '</b> is drinking '+results.beer_name+' <br></font>');
+$("#results").append('<b><font color="#6A2C0C" face="Gill Sans">'+ results.venue_name +  '<br></font>');
+var create= results.created_at.substring (0,results.created_at.length-6)
+
+
+$("#results").append('<font color="#6A2C0C" size="2" face="Gill Sans">'+create +'<br></font>');
+
+$("#results").append("<hr>");
+
+});
+
+    
+
+});
+
+    
+
+        
+
+  });
+
+  
+
+  
+
+  
+
+});
+
+</script>
+
+
+
+</head>
+
+<body onload="initialize()" bgcolor="#f5ad03" style="margin: 0; padding: 0">
+
+<style> body{ 
+
+background-image:url("bubblybeerCorner.jpg");
+
+background-repeat:no-repeat;
+
+background-attachment:fixed;
+
+
+
+
+
+}</style>
+
+
+<h1><font color="#6A2C0C" face="Gill Sans">Denton Feed</font></h1>
+
+
+
+<p id="test"></p><br>
+
+
+
+<button id="getFeed">Denton Feed</button>
+
+<button id="getFriendFeed">Friend Feed</button><br>
+
+<!-- <button id="uLoc">UserLocationTest</button>-->
+
+<div id="results"></div>
+
+
+
+
+
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+<!--
 <html>
 
 	<head>
@@ -56,9 +295,9 @@
 	<h1>Places</h1>
 	<div id="Sentence">Testing123</div>
 	
-	</div><!-- /header -->
+	</div>   
 
-	</div><!-- /page -->
+	</div>
 </body>
 
-</html>
+</html>-->

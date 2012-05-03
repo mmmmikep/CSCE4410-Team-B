@@ -12,12 +12,45 @@
 <!--file:///C:/Users/KRISTINAKICKASS/jsontest.txt-->
 <script type="text/javascript">
 
+//Read a page's GET URL variables and return them as an associative array.
+function getUrlVars()
+{
+	var vars = [], hash;
+	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	for(var i = 0; i < hashes.length; i++)
+	{
+		hash = hashes[i].split('=');
+		vars.push(hash[0]);
+		vars[hash[0]] = hash[1];
+	}
+	return vars;
+}
+
+
+
+
+
+var username;
+var password;
 var authString;
-var distinctOffset;
+
+var distinctOffset = 0;
 
 function initialize(){
-	 var username = 'mmmmikep';
-	 var password = 'icarus';
+	
+	getUrlVars();
+	
+	var first = getUrlVars()["UN"];
+
+	// To get the second parameter
+	var second = getUrlVars()["PW"];
+	
+// 	var username = 'mmmmikep';
+ 	 username = first;
+ 	
+//     var password = 'icarus';
+	 password = second;
+	
 	 var passwordHash = Crypto.MD5(password);
 	 authString = btoa(username + ':' + passwordHash); 
 
@@ -29,111 +62,97 @@ function initialize(){
 	 var beerAPIcall = "http://api.untappd.com/v3/beer_search?key=b6077c9e633e11b65375b25eea792597&sort=count&q=";
 	 var beerInfocall = "http://api.untappd.com/v3/beer_info?key=b6077c9e633e11b65375b25eea792597&bid=";
 	 var untappdAPIcall="";
-	 var backbutton = "Back that thing up";
-	 distinctOffset = 0;
+//	 var backbutton = "Back that thing up";
 	 beerTrends();
 
 
-/////zcode }
 
-     document.addEventListener("deviceready", onDeviceReady, false);
 }
 
-// PhoneGap is loaded and it is now safe to make calls PhoneGap methods
-//
-function onDeviceReady() {
-    // Register the event listener
-    document.addEventListener("menubutton", onMenuKeyDown, false);
+function myBeers(){
+	distinctOffset=0;
+
+	}
+
+///zcode 5/2/12
+openPage = function() {
+location.href = userAPIcall+username;
 }
 
-// Handle the menu button
-//
-function onMenuKeyDown() {
-	
-//	document.location="settings.html"; 
-
-alert("You hit the menu button!"); 
-	document.location="file:///android_asset/www/places2.html"; 
-}
-
-///end of zcode 4/12/12
 
 
 
 //preference activity
 
 function beerTrends(){
-	var trendURL = "http://api.untappd.com/v3/trending?key=b6077c9e633e11b65375b25eea792597&type=local&limit=10&age=weekly&geolat=33.216646&geolng=-97.133646";
+	var trendURL = "http://api.untappd.com/v3/trending?key=b6077c9e633e11b65375b25eea792597&type=local&limit=10&age=monthly&geolat=33.216646&geolng=-97.133646";
 	backbutton = $("#results").val;
-	
+
 	$.ajax(
 			{
 			url: trendURL,
 			dataType: "json",		
 			success:function(result){
-				$("#status").html("Popular beers in the Denton area<br>Click on a beer for more info!");
-				
+				$("#status").html('<font color="#6A2C0C" size="3.5" face="Gill Sans"><b>Popular beers in the Denton area</b><br>Click on a beer for more info!</font><hr>');
+
 			      $.each(result.results, 
 			    		  function(i,beer){
 				     	// this is where we do what we want with the beer
-				      		$("#results").html('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.img+'" width="48" height="48" />'+beer.beer_name+'</p>');
+				      		$("#results").append('<font color="#6A2C0C" face="Gill Sans" size="2"><p onclick= "beerclick(' + beer.beer_id + ')"><img id="beerpic" title= "' + beer.beer_id + '" src="' + beer.img + '" width="48" height="48" />&nbsp;&nbsp;&nbsp;&nbsp;<b>' + beer.beer_name + '</b></p>');
 						});	//end each function
 			      }, //end success
 			error: function(req, status, errThrown){
 					$("#results").html("error:" + req + status + errThrown);
 				}
-			  		
+
 	  });
-	
-	
+
+
 }
 
-function myBeers(){
-	distinctOffset=0;
-	
-}
+
 function beerlist(url){
+	url = 'http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user='+username+'&offset='+distinctOffset;
 	var bidURL = url;
 	var offset;
-	var testURL = 'http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep&offset=';
-	var nextURL = 'http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep&offset=' + offset;
-	var prevOffset;
-	
-	
-	backbutton = $("#results").val;
-	$("#status").html("searching...");
+//	var testURL = 'http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep';
 
 	
+	backbutton = $("#results").val;
+	$("#status").html('<font color="#6A2C0C" face="Gill Sans">searching...</font>');
+
 	$.ajax(
 		{
 		url:bidURL,
 		dataType: "json",		
 		success:function(result){
-			
-			$("#status").html("Tap a beer for more info!");
+			bidURL=bidURL+"&offset=25";
+			$("#status").html('<font color="#6A2C0C" face="Gill Sans"><b>Tap a beer for more info!</b></font>');
 
-
-			
 		      $.each(result.results, 
 		    		  function(i,beer){
 			     	// this is where we do what we want with the beer
-			      		$("#results").append('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.beer_stamp+'" width="48" height="48" />'+beer.beer_name+'</p>');
-			     		offset = i;
+			      		$("#results").append('<font color="#6A2C0C" size="2" face="Gill Sans"><b><p onclick="beerclick(' + beer.beer_id + ')"><img id="beerpic" title="' + beer.beer_id + '" src="' + beer.beer_stamp + '" width="48" height="48" />&nbsp;&nbsp&nbsp;' + beer.beer_name + '</b></font></p>');
+						offset=i;
 					});	//end each function
-
-					distinctOffset = distinctOffset + offset + 1;
-					nextURL = "http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep&offset=" + distinctOffset;
-
 					//next page button not working for some reason
-		    $("#nav").html('<button onclick="beerlist(&#34;'+nextURL+'&#34;)">More Beer?</button><br>');
+		      //$("#results").append('<button onclick="beerlist(http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep&offset=25)">Next Page</button><br>');
+		     // $("#results").append(bidURL);
+		     
+		     	distinctOffset = distinctOffset + offset + 1;
+		     	nextURL = "http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user="+username+"&offset=" + distinctOffset;
 
+		     	//next page button not working for some reason
+		     	$("#nav").html('<button onclick="beerlist(&#34;'+nextURL+'&#34;)">More Beer?</button><br>');
+
+		     	
 					}, //end success
 		error: function(req, status, errThrown){
 				$("#results").html("error:" + req + status + errThrown);
 			}
-		  		
+
   });
-	
+
 }
 
 
@@ -147,53 +166,62 @@ function beerclick(uid){
 
 	$("#status").html('Searching for...');
     $("#status").append(uid);
-	
+
     $.ajax({url:bidURL,
-    	type:"GET",
-    	dataType: "json",
-    	beforeSend: function (xhr) {xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
-    	success:function(result){
+     type:"GET",
+     dataType: "json",
+     beforeSend: function (xhr) {xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
+     success:function(result){
 
-    	$("#status").html("Rate, Review, and Check in to this beer!");       
-    	$("#results").html('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
-    	'<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
-    	'<p>--'+result.results.brewery+'</p>');
-    	
-    	$("#results").append('My Rating: '+result.results.your_rating +'<br>');
-    	$("#results").append('Average Rating: '+result.results.avg_rating +"<br>");
+     $("#status").html("Rate, Review, and Check in to this beer!");
+     $("#results").html('<p><img src="'+result.results.img+'" width="125" height="125""><br>'+result.results.name+'</p>'+
+     '<p>'+result.results.type+' - ABV: '+result.results.beer_abv+'%</p>'+
+     '<p>--'+result.results.brewery+'</p>');
+    
+     $("#results").append('My Rating: '+result.results.your_rating +'<br>');
+     $("#results").append('Average Rating: '+result.results.avg_rating +"<br>");
 
-    	$("#nav").html('<button id="checkIn" onclick="beerCheckin('+uid+')">Check In!</button>');
+     $("#nav").html('<button id="checkIn" onclick="beerCheckin('+uid+')">Check In!</button>');
 
 
 
-    	    
-    	},
-    	error: function(req, status, errThrown){
-    	$("#results").html("error:" + req + status + errThrown);
-    	}
+    
+     },
+     error: function(req, status, errThrown){
+     $("#results").html("error:" + req + status + errThrown);
+     }
 
-    	  });
+     });
+
 	}
-
 
   function searchBeer(){
 	  clearPage();
 	  backbutton = $("#results").val;
-		$("#status").html("Searching...");
+	  $("#status").html("Searching...");
 
-		untappdAPIcall = "http://api.untappd.com/v3/beer_search?key=b6077c9e633e11b65375b25eea792597&sort=count&q="+$("#searchText").val();
-    $.getJSON("http://api.untappd.com/v3/beer_search?key=b6077c9e633e11b65375b25eea792597&sort=count&q="+$("#searchText").val(),function(json){
-		$("#status").html("Tap a beer for more info!");
+	  untappdAPIcall = "http://api.untappd.com/v3/beer_search?key=b6077c9e633e11b65375b25eea792597&sort=count&q="+$("#searchText").val();
+	      $.getJSON("http://api.untappd.com/v3/beer_search?key=b6077c9e633e11b65375b25eea792597&sort=count&q="+$("#searchText").val(),function(json){
+	
+				if (json.returned_results == 0)
+				{
+					 $("#status").html("No results found. Try Again!");
+					
+				}
+				else{
+		    	  $("#status").html("Tap a beer for more info!");
+				}
 
-      $.each(json.results, function(i,beer){
-     // this is where we do what we want with the beer
-      $("#results").append('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.beer_stamp+'" width="48" height="48" />'+beer.beer_name+'</p>');
+	        $.each(json.results, function(i,beer){
+	       // this is where we do what we want with the beer
+	        $("#results").append('<p onclick="beerclick('+beer.beer_id+')"><img id="beerpic" title="'+beer.beer_id+'" src="'+beer.beer_stamp+'" width="48" height="48" />'+beer.beer_name+'</p>');
 
-		});
-    
-	});
-  }
+	  });
+	      
+	  });
+	    }
   
+
   function goBack(){
 	  $("#results").html(""+backbutton);
   }
@@ -203,68 +231,85 @@ function beerclick(uid){
 	  $("#status").html("checking in... ");
 	  var review=prompt("Please write a short review of this beer","Reviewed with DentonBierGarten");
 	  var rating=prompt("Please review this beer on a scale from 1-5","0");
-	  
+	  //var foursqID = '40e0b100f964a52021091fe3';
+	  //data: { bid: id, gmt_offset: -6, shout: review, rating_value: rating, foursquare_id: venueID, user_lat: venueLat, user_lng: venueLng},
+
+
+
 	  $.ajax({url: checkinURL,
-	    	type:"POST",
-	    	dataType: "json",
-	    	data: { bid: id, gmt_offset: -6, shout: review, rating_value: rating},
-	    	beforeSend: function (xhr) {xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
-	    	success:function(result){
-	    		$("#status").html("Success! See recommendations below");
-		    	$("#results").html(result.beer_details.beer_name +'<br><img src="'+result.beer_details.img+'" width="72" length="72"><br>'+result.beer_details.brewery_name+'<br><hr>');
-		    	$.each(result.recommendations, 
-			    		  function(i,rec){
-				     	// this is where we do what we want with the beer
-				      		$("#results").append('<p onclick="beerclick('+rec.beer_id+')"><img id="beerpic" title="'+rec.beer_id+'" src="'+rec.img+'" width="48" height="48" />'+rec.beer_name+'</p>');
-						});
+	  type:"POST",
+	  dataType: "json",
+	  data: { bid: id, gmt_offset: -6, shout: review, rating_value: rating},
+	  beforeSend: function (xhr) {xhr.setRequestHeader('Authorization', 'Basic ' + authString); },
+	  success:function(result){
+	  $("#status").html("Success! See recommendations below");
+	  $("#nav").html('');
+	  $("#results").html(result.beer_details.beer_name +'<br><img src="'+result.beer_details.img+'" width="72" length="72"><br>'+result.beer_details.brewery_name+'<br><hr>');
+	  $.each(result.recommendations,
+	  function(i,rec){
+	  // this is where we do what we want with the beer
+	  $("#results").append('<p onclick="beerclick('+rec.beer_id+')"><img id="beerpic" title="'+rec.beer_id+'" src="'+rec.img+'" width="48" height="48" />'+rec.beer_name+'</p>');
+	  });
 
-		    	
 
-	    	
-	    	    
-	    	},
-	    	error: function(req, status, errThrown){
-	    	$("#results").html("error:" + req + status + errThrown);
-	    	}
 
-	    	  });
-	  
-  }
+
+
+	  },
+	  error: function(req, status, errThrown){
+	  $("#results").html("error:" + req + status + errThrown);
+	  }
+
+	  });
+
+	    }
 
   function clearPage(){
 	  $("#results").html("");
 	  $("#status").html("");
 	  $("#nav").html("");
+	  $("#searchText").val("");
+	  
 
-  }
+	    }
+
+  
 </script>		  
 
 
 </head>
-<body onload="initialize()">
-<h1>Das Bier</h1>
+<body onload="initialize()" bgcolor="#f5ad03" style="margin: 0; padding: 0">
 
-<p id="label">Welcome!</p> 
+<style> body{ 
+background-image:url("bubblybeerCorner.jpg");
+background-repeat:no-repeat;
+background-attachment:scrollable;
+ 
 
 
-<p>Enter a beer to search</p>
+
+}</style>
+
+<p><font color="#6A2C0C" face="Gill Sans" size="5"><b>Enter a beer to search</b></font></p>
 <input type="text" id="searchText">
-<button id="bSrch" onclick="searchBeer()">Search Beers</button>
+<button id="bSrch" onclick="searchBeer()"><span>Search&nbsp;&raquo;</span></button>
 <button id="trend" onclick="beerTrends()">Popular Beers</button>
+<!-- <button id="beers" onclick="beerlist('http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep')">My Beers</button>-->
+<!-- <button id="beers" onclick="beerlist('http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=')">My Beers</button>-->
+
+
+<button id="beers" onclick="myBeers();clearPage();beerlist('http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=')">My Beers</button>
+
 <button id="clearclick" onclick="clearPage()">Clear</button>
 
-
-<button id="beers" onclick="myBeers();clearPage();beerlist('http://api.untappd.com/v3/user_distinct?key=b6077c9e633e11b65375b25eea792597&user=mmmmikep&offset=')">My Beers</button>
 <br><br>
 <!-- <button id="backButton" onclick="goBack()">Back</button> -->
+
 <div id="status"></div>
 <div id="nav"></div>
 <div id="results"></div>
 
-
-
-
-
-
 </body>
 </html>
+
+

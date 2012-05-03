@@ -15,9 +15,6 @@ public class ResetUP extends Activity {
 	public static final String PREFERENCE_FILENAME = "UandPStuff";
 	
 	
-
-	
-	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {

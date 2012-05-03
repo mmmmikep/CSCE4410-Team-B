@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.phonegap.DroidGap;
@@ -170,6 +172,98 @@ public class DasBierActivity extends DroidGap {
 	                     */
 	    }
 	}
+	
+	 //basic menu button support
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) 
+    {
+        super.onCreateOptionsMenu(menu);
+        MenuItem item = menu.add("Change Username & Password");
+
+   //     MenuItem item = menu.add("Change Username");
+     //   item = menu.add("Change Password");
+        return true;
+    }
+    
+    //handle menu item selection
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if (item.hasSubMenu() == false)
+        {
+        	if("Change Username & Password"==item.getTitle()) 
+                
+            {
+        		
+
+            	Intent myIntentA1A2 = new Intent(DasBierActivity.this,
+ 	   					ResetUP.class);
+
+ 	   			Bundle myData = new Bundle();
+
+ 	   			myIntentA1A2.putExtras(myData);
+
+ 	   			startActivityForResult(myIntentA1A2,IPC_ID);
+        		
+            }
+        	
+            if("Change Username"==item.getTitle()) 
+            
+            {
+            	Intent myIntentA1A2 = new Intent(DasBierActivity.this,
+ 	   					ResetUP.class);
+
+ 	   			Bundle myData = new Bundle();
+
+ 	   			myIntentA1A2.putExtras(myData);
+
+ 	   			startActivityForResult(myIntentA1A2,IPC_ID);
+            	
+            	/*
+            	 setContentView(R.layout.popupuserpass);
+ 	            final EditText editText1 = (EditText) findViewById(R.id.editText1);
+ 	            final EditText editText2 = (EditText) findViewById(R.id.editText2);
+ 	            
+ 	            Button buttonA = (Button) findViewById(R.id.button1);
+
+ 	            buttonA.setOnClickListener(new View.OnClickListener() 
+ 	            {
+ 	            	
+ 	                @Override
+ 	                public void onClick(View v) 
+ 	                {
+		 	               	
+ 	                	
+ 	                    SharedPreferences.Editor UandPEditor = UandP.edit();
+ 	                    UandPEditor.putString("username", editText1.getText().toString());
+ 	                    UandPEditor.putString("password", editText2.getText().toString());
+ 	                    UandPEditor.commit();
+ 	                    
+ 	                    ///new code 4/19/12 to make it go to regular das beer.
+ 	                    setContentView(R.layout.main);
+ 	    	            // do rest of the code
+ 	    	       		    			
+ 		    	        String unm=UandP.getString("username", null);       
+ 		    			String pass = UandP.getString("password", null);
+ 			    	        		  
+ 		    			updateUsernameAndPassword(unm, pass);
+
+ 		    	    	String m_UserPass="file:///android_asset/www/bier.html?UN="+unm+"&PW="+pass+"&";
+ 		    	    	  
+		    			superUrl(m_UserPass);
+ 	                }
+ 	            });
+            	
+               // super.loadUrl("file:///android_asset/www/index.html");
+               // finish();
+                * 
+                */
+            }
+            if("Change Password"==item.getTitle()) {
+               super.loadUrl("file:///android_asset/www/index.html");
+            }
+        }
+        return true;
+    }
 	
 	
 }

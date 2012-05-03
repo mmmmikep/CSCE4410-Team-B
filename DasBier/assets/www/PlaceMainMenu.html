@@ -30,6 +30,53 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 	if(day == 0)//Sunday
 	{
+
+		$("#HappyHour").attr("href","file:///android_asset/www/sunday.html" );
+
+	} else if (day == 1){
+
+		$("#HappyHour").attr("href","file:///android_asset/www/monday.html" );
+
+	}
+	else if (day == 2){
+
+		$("#HappyHour").attr("href","file:///android_asset/www/tuesday.html" );
+
+	}
+	else if (day == 3){
+
+		$("#HappyHour").attr("href","file:///android_asset/www/wednesday.html" );
+
+	}
+	else if (day == 4){
+
+		$("#HappyHour").attr("href","file:///android_asset/www/thursday.html" );
+
+	}
+	else if (day == 5){
+
+		$("#HappyHour").attr("href","file:///android_asset/www/friday.html" );
+
+	}
+	else if (day == 6){
+
+		$("#HappyHour").attr("href","file:///android_asset/www/saturday.html" );
+
+
+	}
+	else {
+
+		$("#HappyHour").attr("href","file:///android_asset/www/saturday.html" );
+
+	}
+
+		$('#MainList').listview('refresh');
+
+
+	
+/*
+	if(day == 0)//Sunday
+	{
 	
 		$("#HappyHour").attr("href","http://www.dentoncheapdrinks.com/default.asp?day=Sun" );
 		
@@ -71,7 +118,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	}
 	
 		$('#MainList').listview('refresh');
-	
+	*/
 	
 }
     
@@ -120,7 +167,23 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 
 </head> 
-<body onload="initialize()"> 
+<body onload="initialize()" bgcolor="#f5ad03"> 
+
+<style> body{ 
+
+background-image:url("bubblybeerCorner.jpg");
+
+background-repeat:no-repeat;
+
+background-attachment:fixed;
+
+
+
+
+
+}</style>
+
+
 
 <div data-role="page">
 <div data-role="header" >
@@ -130,14 +193,22 @@ document.addEventListener("deviceready", onDeviceReady, false);
 <!--<ul data-role="listview">-->
 <ul id="MainList" data-role="listview"> 
 
-<li><a href="file:///android_asset/www/TestPlacesB.html">Check-in</a></li>
+<div style="background-color:#f5ad03;"></div>
+<style>
+  .ui-page { background: #f5ad03;}
+  
+</style>
+
+
+<!--<li><a href="file:///android_asset/www/TestPlacesB.html">Check-in</a></li>-->
+
 <li><a href="file:///android_asset/www/places2.html">Find Places</a></li>
 <li><a href="file:///android_asset/www/DentonCalender.html">Entertainment</a></li>
 
 <!--<li><a href="file:///android_asset/www/CameraPlace.html">Post a Picture!</a></li>-->
 
-
-<li><a href="http://www.dentoncheapdrinks.com">Happy Hours</a></li>
+<li><a href="file:///android_asset/www/dfwplaces.html">DFW Beer Destinations</a></li>
+<!--<li><a href="http://www.dentoncheapdrinks.com">Happy Hours</a></li>-->
 <li ><a id="HappyHour" href="file:///android_asset/www/viewfeeds.html">Today's Drink Specials</a></li>
 
 </ul>

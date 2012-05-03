@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-  
- <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>
 
-	<!--
-       <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-        <script type="text/javascript" src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
--->
 
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
 
       <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
-	  
-	  
+      
+
+
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<title>Places to Get Beers</title>
     <style type="text/css">
@@ -21,7 +17,7 @@
       body { height: 100%; margin: 0; padding: 0 }
       #map_canvas { height: 100% }
     </style>
-	
+
     <script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false">
     </script>
@@ -31,14 +27,14 @@
 	  var request;
 	  var markersarray =[];
 
-	 
-	  
+
+
 	  function getMyLocation()
 	  {
 		navigator.geolocation.getCurrentPosition(GetMyLocationSuccess, onErrorLocation);
 	  }
-	  
-	
+
+
 	function GetMyLocationSuccess(position)
 	{
 	//document.write(" I made it");
@@ -48,54 +44,54 @@
             center: MyLocationNow,
 			zoom: 16
 		};
-		
+
         map = new google.maps.Map(document.getElementById('map_canvas'),mapOptions);
-				
+
         request. location = MyLocationNow
-		
+
 			createMap();
 	}
-	
+
 	    function onErrorLocation(error) {
         alert('code: '    + error.code    + '\n' +
               'message: ' + error.message + '\n');
     }
-	  
-	  
-	  
+
+
+
       function initialize() {
-	  
+
 		var denton = new google.maps.LatLng(33.216646,-97.133646);
 		var mapOptions = {
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
             center: denton,
 			zoom: 16
 		};
-		
+
         map = new google.maps.Map(document.getElementById('map_canvas'),mapOptions);
-				
+
         request = {
           location: denton,
           radius: 15000,
           types: [],
 		  keyword: "bar"
-		  
+
         };
-		
+
 			createMap();
       }
-	  
+
 	  function createMap()
 	  {
 	    infowindow = new google.maps.InfoWindow();
         var service = new google.maps.places.PlacesService(map);
         service.search(request, callback);
-	  
+
 	  }
-	  
-	  
-	  
-	  
+
+
+
+
 
       function callback(results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -104,32 +100,32 @@
           }
         }
       }
-	  
-	  
+
+
 	  function changePlaces(type){
 		request.keyword=type;
 		createMap()
 	//	var serv= new google.maps.places.PlacesService(map);
 	//	serv.search(request, callback);
 	  }
-	  
-	  
+
+
 	  function clickBars(){
 			clearOverlays();
 			changePlaces("bars");
 		}
-		
+
 	function clickSearch(){
 			clearOverlays();
 			changePlaces(document.getElementById('searchText').value);
 
 	  }
-	  		
+
 		function clickGroc(){
 			clearOverlays();
 			changePlaces("grocery");
 		}
-		
+
 		function clearOverlays() {
 			if (markersarray) {
 				for (i in markersarray) {
@@ -138,8 +134,8 @@
 			}			
 		}		
 
-	  
-	  
+
+
       function createMarker(place) {
 	  var contentTxt;
         var placeLoc = place.geometry.location;
@@ -153,21 +149,21 @@
           var request = {
 		  reference: place.reference
 		  };
-		  
+
 		  service = new google.maps.places.PlacesService(map);
 			service.getDetails(request, deetz);
 
 			function deetz(place, status) {
 				if (status == google.maps.places.PlacesServiceStatus.OK) {
 				contentTxt = 
-				'<p> '+place.name + 
+				'<p>Name = '+place.name + 
 				'<p></p>' + 
-				'<p> '+place.formatted_address+
+				'<p>Address = '+place.formatted_address+
 				'<p></p><img src="'+place.icon+'">';
 				infowindow.setContent(contentTxt);
   }
 }
-		  
+
 		  //infowindow.setContent(place.icon);		  
           infowindow.open(map, this);
         });
@@ -176,30 +172,17 @@
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
   </head>
-  <body onload="initialize()" bgcolor="#f5ad03">
+  <body onload="initialize()">
   
-  <style> body{ 
+ 
 
-background-image:url("bubblybeerCorner.jpg");
-
-background-repeat:no-repeat;
-
-background-attachment:fixed;
-
-
-
-
-
-}</style>
-  
-  <!--  <body onload="initialize()">-->
   
     <div id="map_canvas" style="width:100%; height:65%;"></div>
 		<br>
 	<input type="text" id="searchText" onkeydown="if (event.keyCode == 13) document.getElementById('search_button').click()">
 	<button id="search_button" onclick="clickSearch()">Search</button>
 	<br>
-	
+
 	<button id="change_type" onclick="clickBars()">Bars</button>
 	<button id="change_type" onclick="clickGroc()">Grocery</button>
 	<button id="change_type" onclick="getMyLocation()">Update My Location</button>
